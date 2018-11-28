@@ -48,16 +48,30 @@ const Text = styled.text`
     font-size: 16px;
 `
 
-class LoginInputForm extends Component {
+class SignUp extends Component {
 
     constructor(props){
         super(props);
 
         this.state = {
+            firstName: "",
+            lastName: "",
             email: "",
             password: "",
-            open: false,
         };
+    }
+
+    handleFirstNameChanged = (e) => {
+        this.setState({
+            firstName: e.target.value
+        })
+    }
+
+
+    handleLastNameChanged = (e) => {
+        this.setState({
+            lastName: e.target.value
+        })
     }
 
     handleEmailChange = (e) => {
@@ -72,19 +86,21 @@ class LoginInputForm extends Component {
         })
     }
 
-    validateUser = () => {
+    registerUser = () => {
         if(!this.areInputFormsEmpty()){
-            //validated user
+            //register User
+            console.log(this.state.firstName);
+            console.log(this.state.lastName);
             console.log(this.state.email);
             console.log(this.state.password);
         }
         else{
-            console.log("Invalid Email or Password")
+            console.log("Please fill in all fields")
         }
     }
 
     areInputFormsEmpty = () => {
-        if(this.state.email === "" || this.state.password === ""){
+        if(this.state.firstName === "" || this.state.lastName === "" | this.state.email === "" || this.state.password === ""){
             return true;
         }
         return false;
@@ -93,16 +109,18 @@ class LoginInputForm extends Component {
       render() {
         return (
           <FormContainer>
+            <Input type='text' name='firstname' placeholder='First Name' defaultChecked={this.state.firstName} onChange={this.handleFirstNameChanged}/>
+            <Input type='text' name='firstname' placeholder='Last Name' defaultChecked={this.state.lastName} onChange={this.handleLastNameChanged}/>
             <Input type='text' name='email' placeholder='Email Address' defaultChecked={this.state.email} onChange={this.handleEmailChange}/>
-            <Input type='text' name='password' placeholder='Password' defaultChecked={this.state.password} onChange={this.handlePasswordChange}/>
-            <SubmitBtn onClick={this.validateUser}>Log in</SubmitBtn>
+            <Input type='text' name='Create a password' placeholder='Password' defaultChecked={this.state.password} onChange={this.handlePasswordChange}/>
+            <SubmitBtn onClick={this.registerUser}>Sign Up</SubmitBtn>
             <LineSeperator/>
             <HorizontalWrapper>
-                <Text>Dont have an account? Sign Up</Text>
+                <Text>Already have an account? Log in</Text>
             </HorizontalWrapper>
           </FormContainer>
         );
       }
 }
 
-export default LoginInputForm;
+export default SignUp;
