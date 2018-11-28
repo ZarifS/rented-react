@@ -15,8 +15,8 @@ const Input = styled.input`
     padding-left: 5px;
     height: 40px;
     width: 500px;
-    -webkit-border-radius: 2px;
-    -moz-border-radius: 2px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
     border-radius: 5px;
     font-size: 16px;
 `;
@@ -33,6 +33,21 @@ const SubmitBtn = styled.button`
 
 `;
 
+const LineSeperator = styled.hr`
+    border: 1px solid D3D3D3;
+    width: 510px;
+    margin: 30px 0px;
+`
+
+const HorizontalWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
+const Text = styled.text`
+    font-size: 16px;
+`
+
 class LoginInputForm extends Component {
 
     constructor(props){
@@ -41,6 +56,7 @@ class LoginInputForm extends Component {
         this.state = {
             email: "",
             password: "",
+            open: false,
         };
     }
 
@@ -80,6 +96,10 @@ class LoginInputForm extends Component {
             <Input type='text' name='email' placeholder='Email Address' defaultChecked={this.state.email} onChange={this.handleEmailChange}/>
             <Input type='text' name='password' placeholder='Password' defaultChecked={this.state.password} onChange={this.handlePasswordChange}/>
             <SubmitBtn onClick={this.validateUser}>Log in</SubmitBtn>
+            <LineSeperator/>
+            <HorizontalWrapper>
+                <Text>Dont have an account? Sign Up</Text>
+            </HorizontalWrapper>
           </FormContainer>
         );
       }

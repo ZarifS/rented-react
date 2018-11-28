@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import Login from "./containers/Login/Login";
+import Login from "./containers/Test";
 
 class App extends Component {
   render() {

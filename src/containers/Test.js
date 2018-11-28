@@ -2,10 +2,11 @@
 import styled from 'styled-components';
 import React, { Component } from "react";
 import Modal from 'react-responsive-modal';
-import LoginInputForm from './components/LoginInputForm';
+import Login from './Login';
+import SignUp from './SignUp';
 
 
-class Login extends Component {
+class Test extends Component {
 
     state = {
         open: false,
@@ -23,13 +24,13 @@ class Login extends Component {
         const { open } = this.state;
         return (
           <div>
-            <button onClick={this.onOpenModal}>Open modal</button>
+            <button onClick={this.onOpenModal}>Open</button>
             <Modal open={open} onClose={this.onCloseModal} center>
-                <LoginInputForm/>
+                <SignUp/>
             </Modal>
           </div>
         );
       }
 }
 
-export default Login;
+export default Test;
