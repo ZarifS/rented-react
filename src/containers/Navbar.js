@@ -6,22 +6,21 @@ import ModalWrapper from "./ModalWrapper";
 class NavBar extends Component {
   render = () => {
     return (
-      <div style={{ ...styles.navBarWrapper }}>
+      <nav style={{ ...styles.navBarWrapper }}>
         <ModalWrapper description="Login">
           <Login />
         </ModalWrapper>
         <ModalWrapper description="Sign Up">
           <SignUp />
         </ModalWrapper>
-      </div>
+      </nav>
     );
   };
 }
 
 const styles = {
   navBarWrapper: {
-    border: "1px black solid",
-    padding: "20px"
+    borderBottom: "1px lightgrey solid"
   }
 };
 
