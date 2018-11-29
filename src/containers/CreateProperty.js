@@ -90,7 +90,7 @@ class CreateProperty extends Component{
         }
         for (var j=0;j<files.length;j++){
             let reader=new FileReader();
-            if (files[j].size>3000000){
+            if (files[j].size>5000000){
                 message=("File size exceeded 5 mb");
                 break;
             }
