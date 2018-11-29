@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Home from "./containers/Home";
 import "./App.css";
 import NavBar from "./containers/Navbar";
+import PropertiesList from "./containers/PropertiesList";
 
 class App extends Component {
   render() {
@@ -10,22 +11,12 @@ class App extends Component {
       <Router>
         <div>
           <NavBar />
-          <Route
-            style={{ ...styles.routeWrapper }}
-            path="/"
-            exact
-            component={Home}
-          />
+          <Route path="/" exact component={Home} />
+          <Route path="/ownerProperties" exact component={PropertiesList} />
         </div>
       </Router>
     );
   }
 }
-
-const styles = {
-  routeWrapper: {
-    padding: "0px"
-  }
-};
 
 export default App;
