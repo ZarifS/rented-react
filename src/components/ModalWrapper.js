@@ -18,18 +18,24 @@ class ModalWrapper extends Component {
   render() {
     const { open } = this.state;
     return (
-      <div>
-        <button onClick={this.onOpenModal}>{this.props.description}</button>
+      <span style={{ ...styles.modalButton }}>
+        <span onClick={this.onOpenModal}>{this.props.description}</span>
         <Modal open={open} onClose={this.onCloseModal} center>
           {this.props.children}
         </Modal>
-      </div>
+      </span>
     );
   }
 }
 
 ModalWrapper.propTypes = {
   description: PropTypes.string.isRequired
+};
+
+const styles = {
+  modalButton: {
+    border: "1px black solid"
+  }
 };
 
 export default ModalWrapper;
