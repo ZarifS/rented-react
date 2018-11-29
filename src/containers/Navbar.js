@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Login from "./Login";
 import SignUp from "./SignUp";
-import ModalWrapper from "./ModalWrapper";
+import ModalWrapper from "../components/ModalWrapper";
 
 class NavBar extends Component {
   render = () => {
