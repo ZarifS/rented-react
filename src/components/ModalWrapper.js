@@ -34,7 +34,8 @@ ModalWrapper.propTypes = {
 
 const styles = {
   modalButton: {
-    border: "1px black solid"
+    padding: "20px",
+    cursor: "pointer"
   }
 };
 
