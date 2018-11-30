@@ -16,7 +16,7 @@ const Wrap=styled.ul`
     background-color:whitesmoke;
     list-style-type: none;
     padding: 0;
-    border-radius: 3px;
+    border-radius: 2px;
 `;
 const Row=styled.li`
     display: flex;
@@ -45,9 +45,14 @@ class CreateProperty extends Component{
         super(props);
         this.imageInput=React.createRef();
         this.state={
-            value: "apartment",
-            location: "",
-            address: "",
+            value: "Apartment",
+            title: "",
+            street: "",
+            streetNumber: "",
+            city: "",
+            province:"",
+            country:"",
+            postalCode:"",
             numBedrooms: 0,
             numBathrooms:0,
             numOtherRooms:0,
@@ -55,7 +60,8 @@ class CreateProperty extends Component{
             image: [],
             allImages:[],
             imageURLS:[],
-            errMessage:""
+            errMessage:"",
+            available: true
         };
         this.handleChange=this.handleChange.bind(this);
         this.handleInputChange=this.handleInputChange.bind(this);
@@ -120,11 +126,16 @@ class CreateProperty extends Component{
         });
     }
     handleSubmit(e){
-        console.log(this.validateInput());
+        var valid=this.validateInput();
+        if(valid){
+
+        }
+
         e.preventDefault();
     }
     validateInput = () => {
-        if(this.state.location==="" ||this.state.address==="" ||this.state.rent<0||this.state.numBathrooms<0||this.state.numBedrooms<0||this.state.numOtherRooms<0||this.state.rent<0){
+        if(this.state.street_number==="" ||this.state.street==="" || this.state.city===""|| this.state.province===""
+        || this.state.country===""|| this.state.postalCode===""||this.state.rent<0||this.state.numBathrooms<0||this.state.numBedrooms<0||this.state.numOtherRooms<0||this.state.rent<0){
             return false;
         }
         return true;
@@ -135,56 +146,79 @@ class CreateProperty extends Component{
                 <Wrap>
                 <Row>
                     <Label>
+                        Title:
+                    </Label>
+                    <Input name="title" type="text" defaultValue={this.state.title} onChange={this.handleInputChange}/>
+                </Row>
+                <Row>
+                    <Label>
                         Property Type: 
                     </Label>
-                    <Select name="propertyType" value={this.state.value} onChange={this.handleChange}>
-                        <option value="apartment">Apartment</option>
-                        <option value="house">House</option>
+                    <Select name="propertyType" title={"Select Property Type"} value={this.state.value} onChange={this.handleChange}>
+                        <option value="Apartment">Apartment</option>
+                        <option value="House">House</option>
                     </Select>
                 </Row>
-                <br/>
                 <Row>
                     <Label>
-                        Address:
+                        Street Name:
                     </Label>
-                    <Input name="address" type="text" defaultValue={this.state.address} onChange={this.handleInputChange}/>
+                    <Input name="street" type="text" defaultValue={this.state.street} onChange={this.handleInputChange}/>
                 </Row>
-                <br/>
                 <Row>
                     <Label>
-                        Location:
+                        Street Number:
                     </Label>
-                    <Input name="location" type="text" defaultValue={this.state.location} onChange={this.handleInputChange}/>
+                    <Input name="streetNumber" type="text" defaultValue={this.state.streetNumber} onChange={this.handleInputChange}/>
                 </Row>
-                <br/>
+                <Row>
+                    <Label>
+                        City:
+                    </Label>
+                    <Input name="city" type="text" defaultValue={this.state.city} onChange={this.handleInputChange}/>
+                </Row>
+                <Row>
+                    <Label>
+                        Province:
+                    </Label>
+                    <Input name="province" type="text" defaultValue={this.state.province} onChange={this.handleInputChange}/>
+                </Row>
+                <Row>
+                    <Label>
+                        Country:
+                    </Label>
+                    <Input name="country" type="text" defaultValue={this.state.country} onChange={this.handleInputChange}/>
+                </Row>
+                <Row>
+                    <Label>
+                        Postal Code:
+                    </Label>
+                    <Input name="postalCode" type="text" defaultValue={this.state.postalCode} onChange={this.handleInputChange}/>
+                </Row>
                 <Row>
                     <Label>
                         Number of Bedrooms:
                     </Label>
                     <Input name="numBedrooms" type="number" defaultValue={this.state.numBedrooms} onChange={this.handleInputChange}/>
                 </Row>
-                <br/>
                 <Row>
                     <Label>
                         Number of Bathrooms:
                     </Label>
                     <Input name="numBathrooms" type="number" defaultValue={this.state.numBathrooms} onChange={this.handleInputChange}/>
                 </Row>
-                <br/>
                 <Row>
                     <Label>
                         Number of Other Rooms:
                     </Label>
                     <Input name="numOtherRooms" type="number" defaultValue={this.state.numOtherRooms} onChange={this.handleInputChange}/>
                 </Row>
-                <br/>
                 <Row>
                     <Label>
                         Rent:
                     </Label>
                     <Input name="rent" type="number" defaultValue={this.state.numOtherRooms} onChange={this.handleInputChange}/>
                 </Row>
-                <br/>
                 <Row>
                     <Label>
                         Upload Images:
