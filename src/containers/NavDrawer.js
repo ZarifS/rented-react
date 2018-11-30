@@ -11,6 +11,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
+import { Home } from "@material-ui/icons";
 
 const styles = {
   list: {
@@ -32,17 +33,23 @@ class NavDrawer extends React.Component {
     });
   };
 
+  iconMap = text => {
+    if (text === "Home") {
+      return <Home />;
+    } else {
+      return <InboxIcon />;
+    }
+  };
+
   render() {
     const { classes } = this.props;
 
     const sideList = (
       <div className={classes.list}>
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+          {["Home", "Starred", "Send email", "Drafts"].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+              <ListItemIcon>{this.iconMap(text)}</ListItemIcon>
               <Link to="/anyBody">{text}</Link>
             </ListItem>
           ))}
