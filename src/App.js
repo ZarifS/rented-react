@@ -12,7 +12,16 @@ class App extends Component {
         <div>
           <NavBar />
           <Route path="/" exact component={Home} />
-          <Route path="/ownerProperties" exact component={PropertiesList} />
+          <Route
+            path="/ownerProperties"
+            exact
+            render={props => <PropertiesList {...props} isAuthed={true} />}
+          />
+          <Route
+            path="/rentedProperties"
+            exact
+            render={props => <PropertiesList {...props} isAuthed={true} />}
+          />
         </div>
       </Router>
     );
