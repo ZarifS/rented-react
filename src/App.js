@@ -6,11 +6,22 @@ import NavBar from "./containers/Navbar";
 import PropertiesList from "./containers/PropertiesList";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: { name: "Unaiz" }
+    };
+  }
+
+  setUser = user => {
+    this.setState({ user });
+  };
+
   render() {
     return (
       <Router>
         <div>
-          <NavBar />
+          <NavBar user={this.state.user} setUser={this.setUser} />
           <Route path="/" exact component={Home} />
           <Route
             path="/ownerProperties"
