@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { withStyles } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
+import {
+  Toolbar,
+  Typography,
+  IconButton,
+  MenuItem,
+  Menu
+} from "@material-ui/core/";
 import { AccountCircle } from "@material-ui/icons/";
 import NavDrawer from "./NavDrawer";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import { Link } from "react-router-dom";
+import ModalWrapper from "../components/ModalWrapper";
+import Login from "./Login";
+import SignUp from "./SignUp";
 
 class NavBar extends Component {
   constructor(props) {
@@ -40,11 +46,11 @@ class NavBar extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <NavDrawer />
+            <NavDrawer user={this.props.user} />
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Rented
             </Typography>
-            {auth && (
+            {this.state.auth && (
               <div>
                 <IconButton
                   aria-owns={open ? "menu-appbar" : undefined}
@@ -57,20 +63,33 @@ class NavBar extends Component {
                 <Menu
                   id="menu-appbar"
                   anchorEl={anchorEl}
+                  getContentAnchorEl={null}
                   anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
+                    vertical: "bottom",
+                    horizontal: "center"
                   }}
                   transformOrigin={{
                     vertical: "top",
-                    horizontal: "right"
+                    horizontal: "center"
                   }}
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                  <MenuItem onClick={this.handleClose}>
+                    <Link to="/profile">Profile</Link>
+                  </MenuItem>
                   <MenuItem onClick={this.handleClose}>My account</MenuItem>
                 </Menu>
+              </div>
+            )}
+            {!this.state.auth && (
+              <div>
+                <ModalWrapper description="Login">
+                  <Login />
+                </ModalWrapper>
+                <ModalWrapper description="Sign up">
+                  <SignUp />
+                </ModalWrapper>
               </div>
             )}
           </Toolbar>
@@ -86,11 +105,6 @@ const styles = {
   },
   grow: {
     flexGrow: 1
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-    color: "fd5c63"
   }
 };
 

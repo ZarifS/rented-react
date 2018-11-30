@@ -7,11 +7,18 @@ import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import { Link } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
-import { Home } from "@material-ui/icons";
+import {
+  Home,
+  Assessment,
+  Menu,
+  AccountBalance,
+  ShoppingCart,
+  AccountBox,
+  CreditCard,
+  Build,
+  Bookmark
+} from "@material-ui/icons";
 
 const styles = {
   list: {
@@ -19,26 +26,65 @@ const styles = {
   }
 };
 
+const allNavigationPaths = [
+  {
+    name: "Browse",
+    url: "/",
+    icon: <ShoppingCart />
+  }
+];
+
+const accountNavigationPaths = [
+  {
+    name: "Profile",
+    url: "/profile",
+    icon: <AccountBox />
+  },
+  {
+    name: "Payment",
+    url: "/profile/credit",
+    icon: <CreditCard />
+  },
+  {
+    name: "Manage Properties",
+    url: "/profile/editProperties",
+    icon: <Build />
+  }
+];
+
+const userNavigationPaths = [
+  {
+    name: "Rentals",
+    url: "/profile/rented",
+    icon: <AccountBalance />
+  },
+  {
+    name: "Owned Properties",
+    url: "/profile/owned",
+    icon: <Home />
+  },
+  {
+    name: "Owner Statistics",
+    url: "/profile/ownerStatistics",
+    icon: <Assessment />
+  },
+  {
+    name: "Visitation List",
+    url: "/profile/editProperties",
+    icon: <Bookmark />
+  }
+];
+
 class NavDrawer extends React.Component {
-  state = {
-    top: false,
-    left: false,
-    bottom: false,
-    right: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = { left: false };
+  }
 
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open
     });
-  };
-
-  iconMap = text => {
-    if (text === "Home") {
-      return <Home />;
-    } else {
-      return <InboxIcon />;
-    }
   };
 
   render() {
@@ -47,21 +93,36 @@ class NavDrawer extends React.Component {
     const sideList = (
       <div className={classes.list}>
         <List>
-          {["Home", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{this.iconMap(text)}</ListItemIcon>
-              <Link to="/anyBody">{text}</Link>
+          {allNavigationPaths.map((navObject, index) => (
+            <ListItem button key={index}>
+              <ListItemIcon>{navObject.icon}</ListItemIcon>
+              <Link to={navObject.url}>{navObject.name}</Link>
             </ListItem>
           ))}
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <Link to="/userOnly">{text}</Link>
+          {userNavigationPaths.map((navObject, index) => (
+            <ListItem
+              disabled={this.props.user === null ? true : false}
+              button
+              key={index}
+            >
+              <ListItemIcon>{navObject.icon}</ListItemIcon>
+              <Link to={navObject.url}>{navObject.name}</Link>
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {accountNavigationPaths.map((navObject, index) => (
+            <ListItem
+              disabled={this.props.user === null ? true : false}
+              button
+              key={index}
+            >
+              <ListItemIcon>{navObject.icon}</ListItemIcon>
+              <Link to={navObject.url}>{navObject.name}</Link>
             </ListItem>
           ))}
         </List>
@@ -71,7 +132,7 @@ class NavDrawer extends React.Component {
     return (
       <div>
         <Button onClick={this.toggleDrawer("left", true)}>
-          <MenuIcon />
+          <Menu />
         </Button>
         <Drawer
           open={this.state.left}
