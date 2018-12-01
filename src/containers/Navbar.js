@@ -20,7 +20,7 @@ class NavBar extends Component {
     super(props);
     let auth = this.props.user ? true : false;
     this.state = {
-      auth: auth,
+      auth,
       anchorEl: null
     };
   }
@@ -50,7 +50,7 @@ class NavBar extends Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Rented
             </Typography>
-            {this.state.auth && (
+            {auth && (
               <div>
                 <IconButton
                   aria-owns={open ? "menu-appbar" : undefined}
@@ -76,13 +76,15 @@ class NavBar extends Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.handleClose}>
-                    <Link to="/profile">Profile</Link>
+                    <Link to="/profile/setup">Profile</Link>
                   </MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                  <MenuItem onClick={this.handleClose}>
+                    <Link to="/profile/logout">Logout</Link>
+                  </MenuItem>
                 </Menu>
               </div>
             )}
-            {!this.state.auth && (
+            {!auth && (
               <div>
                 <ModalWrapper description="Login">
                   <Login />
@@ -101,7 +103,8 @@ class NavBar extends Component {
 
 const styles = {
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    paddingBottom: 20
   },
   grow: {
     flexGrow: 1

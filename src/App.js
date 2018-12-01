@@ -22,17 +22,25 @@ class App extends Component {
       <Router>
         <div>
           <NavBar user={this.state.user} setUser={this.setUser} />
-          <Route path="/" exact component={Home} />
-          <Route
-            path="/ownerProperties"
-            exact
-            render={props => <PropertiesList {...props} isAuthed={true} />}
-          />
-          <Route
-            path="/rentedProperties"
-            exact
-            render={props => <PropertiesList {...props} isAuthed={true} />}
-          />
+          <div className="container">
+            <Route
+              path="/"
+              exact
+              render={props => (
+                <Home {...props} isAuthed={true} user={this.state.user} />
+              )}
+            />
+            <Route
+              path="/profile/owned"
+              exact
+              render={props => <PropertiesList {...props} isAuthed={true} />}
+            />
+            <Route
+              path="/profile/rented"
+              exact
+              render={props => <PropertiesList {...props} isAuthed={true} />}
+            />
+          </div>
         </div>
       </Router>
     );
