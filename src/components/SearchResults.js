@@ -29,6 +29,7 @@ const styles = theme => ({
   const ReturnArrow = styled(KeyboardBackspaceRounded)`
     padding-top: 10px;
     font-size: 50px;
+    cursor: pointer;
   `;
 
 class SearchResults extends Component {
