@@ -39,6 +39,12 @@ const Row=styled.li`
 const ImgRow=styled.li`
     display: inline;
     padding: .5em;`
+const Button1=styled.button`
+    padding: .5em;
+    border: 0;
+    margin-right: 5px;
+
+`;
 const Button=styled.button`
     padding: .5em;
     border: 0;
@@ -52,28 +58,22 @@ const Image =styled.img`
     width: 500px;
     height: 500px:
 `;
-class CreateProperty extends Component{
+class UpdateProperty extends Component{
     constructor(props){
         super(props);
         this.imageInput=React.createRef();
+        const property = { ...this.props.property};
         this.state={
-            value: "Apartment",
-            title: "",
-            street: "",
-            streetNumber: "",
-            city: "",
-            province:"",
-            country:"",
-            postalCode:"",
-            numBedrooms: 0,
-            numBathrooms:0,
-            numOtherRooms:0,
-            rent:0,
+            title: property.title,
+            numBedrooms: property.bedrooms,
+            numBathrooms:property.bathrooms,
+            numOtherRooms:property.other,
+            rent:property.rent,
             image: [],
             allImages:[],
-            imageURLS:[],
+            imageURLS:[property.main,property.pic2,property.pic3,property.pic4,property.pic5],
             errMessage:"",
-            available: false
+            available: property.available
         };
         this.handleChange=this.handleChange.bind(this);
         this.handleInputChange=this.handleInputChange.bind(this);
@@ -151,6 +151,9 @@ class CreateProperty extends Component{
 
         e.preventDefault();
     }
+    handleCancel(e){
+        return;
+    }
     validateInput = () => {
         if(this.state.street_number==="" ||this.state.street==="" || this.state.city===""|| this.state.province===""
         || this.state.country===""|| this.state.postalCode===""||this.state.rent<0||this.state.numBathrooms<0||this.state.numBedrooms<0||this.state.numOtherRooms<0||this.state.rent<0){
@@ -172,46 +175,43 @@ class CreateProperty extends Component{
                     <Label>
                         Property Type: 
                     </Label>
-                    <Select name="propertyType" title={"Select Property Type"} value={this.state.value} onChange={this.handleChange}>
-                        <option value="Apartment">Apartment</option>
-                        <option value="House">House</option>
-                    </Select>
+                    <Input name="type" disabled={true} type="text" defaultValue={this.property.type}/>
                 </Row>
                 <Row>
                     <Label>
                         Street Name:
                     </Label>
-                    <Input name="street" type="text" defaultValue={this.state.street} onChange={this.handleInputChange}/>
+                    <Input name="street" disabled={true} type="text" defaultValue={this.property.street} onChange={this.handleInputChange}/>
                 </Row>
                 <Row>
                     <Label>
                         Street Number:
                     </Label>
-                    <Input name="streetNumber" type="text" defaultValue={this.state.streetNumber} onChange={this.handleInputChange}/>
+                    <Input name="streetNumber" disabled={true} type="text" defaultValue={this.property.street_number} onChange={this.handleInputChange}/>
                 </Row>
                 <Row>
                     <Label>
                         City:
                     </Label>
-                    <Input name="city" type="text" defaultValue={this.state.city} onChange={this.handleInputChange}/>
+                    <Input name="city" type="text" disabled={true} defaultValue={this.property.city} onChange={this.handleInputChange}/>
                 </Row>
                 <Row>
                     <Label>
                         Province:
                     </Label>
-                    <Input name="province" type="text" defaultValue={this.state.province} onChange={this.handleInputChange}/>
+                    <Input name="province" disabled={true} type="text" defaultValue={this.property.province} onChange={this.handleInputChange}/>
                 </Row>
                 <Row>
                     <Label>
                         Country:
                     </Label>
-                    <Input name="country" type="text" defaultValue={this.state.country} onChange={this.handleInputChange}/>
+                    <Input name="country" disabled={true} type="text" defaultValue={this.property.country} onChange={this.handleInputChange}/>
                 </Row>
                 <Row>
                     <Label>
                         Postal Code:
                     </Label>
-                    <Input name="postalCode" type="text" defaultValue={this.state.postalCode} onChange={this.handleInputChange}/>
+                    <Input name="postalCode" disabled={true} type="text" defaultValue={this.property.postalCode} onChange={this.handleInputChange}/>
                 </Row>
                 <Row>
                     <Label>
@@ -252,7 +252,7 @@ class CreateProperty extends Component{
                         Upload Images:
                     </Label>
                     <Input type="file" ref={this.imageInput} multiple onChange={this.fileHandler} />
-                    {/* <Button onClick={this.fileUpload}  >Upload Image</Button> */}
+                    {<Button onClick={this.fileUpload}  >Upload Image</Button>}
                 </Row>
                 <br/>
                 <ul>
@@ -268,11 +268,13 @@ class CreateProperty extends Component{
                 </ul>
                 <br/>
                 <Row>
-                    <Button onClick={this.handleSubmit}  >Add Property</Button>
+                    <Button1 onClick={this.handleCancel}  >Cancel</Button1>
+                    
+                    <Button onClick={this.handleSubmit}  >Update Property</Button>
                 </Row>
                 </Wrap>
             </Form>
         );
     }
 }
-export default CreateProperty;
+export default UpdateProperty;
