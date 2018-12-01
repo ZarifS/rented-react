@@ -9,7 +9,7 @@ class PropertiesList extends Component {
     properties.forEach((property, index) => {
       jsxProperties.push(<SingleProperty key={index} property={property} />);
     });
-    return <div>{jsxProperties}</div>;
+    return jsxProperties;
   };
   render = () => {
     return <div className="container">{this.renderProperties()}</div>;

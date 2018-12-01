@@ -103,7 +103,8 @@ class NavBar extends Component {
 
 const styles = {
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    paddingBottom: 20
   },
   grow: {
     flexGrow: 1
