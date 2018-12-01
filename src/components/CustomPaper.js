@@ -17,6 +17,11 @@ const styles = theme => ({
 
   const StyledPaper = styled(Paper)`
     height: ${props => props.height}px;
+    cursor: ${props => props.isClickable ? 'pointer' : ''};
+    transition: all .2s ease-in-out;
+    &: hover {
+        transform: ${props => props.isClickable ? 'scale(1.03)' : ''};
+    }
   `;
 
   const Image = styled.img`
@@ -44,7 +49,7 @@ class CustomPaper extends Component {
   render() {
     const { classes } = this.props;
     return (
-            <StyledPaper className={classes.paper} height={this.props.height}>
+            <StyledPaper className={classes.paper} height={this.props.height} isClickable={this.props.isClickable}>
                 <Image src={this.props.image}/>
                 <VerticalWrapper>
                     {this.props.children}
@@ -56,12 +61,13 @@ class CustomPaper extends Component {
 
 CustomPaper.defaultProps = {
     height: 250,
-    transform: 1.00,
+    isClickable: false,
 }
 
 CustomPaper.propTypes = {
     height: PropTypes.number,
     image: PropTypes.string,
+    isClickable: PropTypes.boolean, 
 }
 
 export default withStyles(styles)(CustomPaper);

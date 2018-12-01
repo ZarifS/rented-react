@@ -32,7 +32,6 @@ const styles = theme => ({
     font-weight: 800;
   `;
 
-
   const Title = styled.span`
     font-size: 20px;
     font-weight: 800;
@@ -41,7 +40,6 @@ const styles = theme => ({
 
   const Price = styled.span`
     font-size: 16px;
-    padding: 12px 24px;
     font-weight: 600;
     z-index: 100;
   `
@@ -68,7 +66,7 @@ class Explore extends Component {
         </Grid>
             {[0, 1, 2].map(value => (
               <Grid key={value} item xs={4}>
-                <CustomPaper height={300} image={require('../images/explore.jpg')}>
+                <CustomPaper height={300} image={require('../images/explore.jpg')} isClickable={true}>
                     <Title>Ottawa</Title>
                     <Price>$138/night</Price>
                 </CustomPaper>
@@ -79,7 +77,7 @@ class Explore extends Component {
         </Grid>
             {[0, 1, 2, 3].map(value => (
               <Grid key={value} item xs={3}>
-                <CustomPaper height={250} image={require('../images/explore.jpg')}>
+                <CustomPaper height={250} image={require('../images/explore.jpg')} isClickable={true}>
                       <Title>Ottawa</Title>
                       <Price>$138/night</Price>
                 </CustomPaper>
