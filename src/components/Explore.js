@@ -21,11 +21,20 @@ const styles = theme => ({
 
     paperFeaturedSection: {
       height: 300,
+      textAlign: 'center',
+      justifyContent: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      overflow: 'hidden',
     },
 
     paperRecommendedSection: {
         height: 250,
-        width: 200,
+        textAlign: 'center',
+        justifyContent: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        overflow: 'hidden',
     },
 
     control: {
@@ -33,10 +42,11 @@ const styles = theme => ({
     },
   });
 
-  const ExploreImage = styled.img`
+  const Image = styled.img`
     flex-shrink: 0;
     min-width: 100%;
     min-height: 100%;
+    filter: brightness(75%);
   `
 
   const ExploreButton = styled.button`
@@ -56,6 +66,38 @@ const styles = theme => ({
   `;
 
 
+  const Title = styled.span`
+    font-size: 20px;
+    font-weight: 800;
+    color: white;
+  `;
+
+  const Price = styled.span`
+    font-size: 16px;
+    padding: 12px 24px;
+    font-weight: 600;
+    z-index: 100;
+  `
+
+  const VerticalWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    padding: 12px 24px;
+    z-index: 100;
+    color: white;
+  `
+
+  const StyledPaper = styled(Paper)`
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    &: hover {
+      transform: scale(1.05);
+    }
+  `;
+
+
+
 class Explore extends Component {
   constructor(props) {
     super(props);
@@ -71,7 +113,7 @@ class Explore extends Component {
       <Grid container spacing={24}>
         <Grid item xs={12}>
             <Paper className={classes.paperExploreSection}> 
-                <ExploreImage src={require('../images/explore.jpg')}/>
+                <Image src={require('../images/explore.jpg')}/>
                 <ExploreButton>EXPLORE PROPERTIES ></ExploreButton>
             </Paper>
         </Grid>
@@ -80,15 +122,27 @@ class Explore extends Component {
         </Grid>
             {[0, 1, 2].map(value => (
               <Grid key={value} item xs={4}>
-                <Paper className={classes.paperFeaturedSection}>Property</Paper>
+                <StyledPaper className={classes.paperFeaturedSection}>
+                  <Image src={require('../images/explore.jpg')}/>
+                  <VerticalWrapper>
+                    <Title>Ottawa</Title>
+                    <Price>$138/night</Price>
+                  </VerticalWrapper>
+                </StyledPaper>
               </Grid>
             ))}
         <Grid item xs={12}>
             <h3>Recommended for you</h3>
         </Grid>
-            {[0, 1, 2, 3, 4].map(value => (
-              <Grid key={value} item>
-              <Paper className={classes.paperRecommendedSection} />
+            {[0, 1, 2, 3].map(value => (
+              <Grid key={value} item xs={3}>
+              <Paper className={classes.paperRecommendedSection}>
+                <Image src={require('../images/explore.jpg')}/>
+                <VerticalWrapper>
+                    <Title>Ottawa</Title>
+                    <Price>$138/night</Price>
+                  </VerticalWrapper>
+              </Paper>
               </Grid>
             ))}
         </Grid>
