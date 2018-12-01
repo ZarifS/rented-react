@@ -105,7 +105,7 @@ class CreateProperty extends Component{
         super(props);
         this.imageInput=React.createRef();
         this.state={
-            value: "Apartment",
+            type: "Apartment",
             title: "",
             street: "",
             streetNumber: "",
@@ -180,7 +180,7 @@ class CreateProperty extends Component{
         });
     }
     handleChange(e){
-        this.setState({value: e.target.value});
+        this.setState({type: e.target.value});
     }
     handleInputChange(e){
         const target=e.target;
@@ -210,7 +210,7 @@ class CreateProperty extends Component{
         return(
             <form className={classes.container}>
                 <TextField name="title" label="Title" className={classes.textField} PlaceHolder="Title"  value={this.state.title} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                <TextField name="type" select label="Property Type" className={classes.textField} value={this.state.value} onChange={this.handleChange} SelectProps={{MenuProps:{className:classes.menu,}}}
+                <TextField name="type" select label="Property Type" className={classes.textField} value={this.state.type} onChange={this.handleChange} SelectProps={{MenuProps:{className:classes.menu,}}}
                             helperText="Please select Property Type" margin="normal" variant="outlined">
                         {types.map(option=>(
                             <MenuItem key={option.value} value={option.value}>
@@ -249,7 +249,7 @@ class CreateProperty extends Component{
                     <label className={classes.textField}>
                         Upload Images:
                     </label>
-                    <input accept="image/*" className={classes.input} style={{flex:'flex-start'}} id="uploadImage" type="file" ref={this.imageInput} multiple onChange={this.fileHandler} />
+                    <input accept="image/*" className={classes.input} id="uploadImage" type="file" ref={this.imageInput} multiple onChange={this.fileHandler} />
                     <label htmlFor="uploadImage"> 
                     <Button className={classes.button} variant="contained" color="primary" component="span" onClick={this.fileUpload}  >Choose Images to Upload</Button>
                     </label>
