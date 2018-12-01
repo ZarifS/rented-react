@@ -1,5 +1,26 @@
 import styled from "styled-components";
 import React, { Component } from "react";
+import { withStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
+  },
+});
+
 
 const FormContainer = styled.div`
   display: flex;
@@ -54,33 +75,16 @@ class SignUp extends Component {
       firstName: "",
       lastName: "",
       email: "",
-      password: ""
+      password: "",
+      accountType: 'user',
     };
   }
 
-  handleFirstNameChanged = e => {
+  handleChange = (e) => {
     this.setState({
-      firstName: e.target.value
+      [e.target.name]: e.target.value
     });
-  };
-
-  handleLastNameChanged = e => {
-    this.setState({
-      lastName: e.target.value
-    });
-  };
-
-  handleEmailChange = e => {
-    this.setState({
-      email: e.target.value
-    });
-  };
-
-  handlePasswordChange = e => {
-    this.setState({
-      password: e.target.value
-    });
-  };
+  }
 
   registerUser = () => {
     if (!this.areInputFormsEmpty()) {
@@ -97,7 +101,7 @@ class SignUp extends Component {
   areInputFormsEmpty = () => {
     if (
       this.state.firstName === "" ||
-      (this.state.lastName === "") | (this.state.email === "") ||
+      (this.state.lastName === "") || (this.state.email === "") ||
       this.state.password === ""
     ) {
       return true;
@@ -106,6 +110,7 @@ class SignUp extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <FormContainer>
         <Input
@@ -113,29 +118,44 @@ class SignUp extends Component {
           name="firstname"
           placeholder="First Name"
           defaultChecked={this.state.firstName}
-          onChange={this.handleFirstNameChanged}
+          onChange={this.handleChange}
         />
         <Input
           type="text"
           name="firstname"
           placeholder="Last Name"
           defaultChecked={this.state.lastName}
-          onChange={this.handleLastNameChanged}
+          onChange={this.handleChange}
         />
         <Input
           type="text"
           name="email"
           placeholder="Email Address"
           defaultChecked={this.state.email}
-          onChange={this.handleEmailChange}
+          onChange={this.handleChange}
         />
         <Input
           type="text"
           name="Create a password"
           placeholder="Password"
           defaultChecked={this.state.password}
-          onChange={this.handlePasswordChange}
+          onChange={this.handleChange}
         />
+        <form className={classes.root} autoComplete="off">
+          <FormControl className={classes.formControl}>
+            <InputLabel>Account Type</InputLabel>
+            <Select
+              value={this.state.accountType}
+              onChange={this.handleChange}
+              inputProps={{
+                name: 'accountType',
+              }}
+            >
+              <MenuItem value={'user'}>User</MenuItem>
+              <MenuItem value={'agent'}>Agent</MenuItem>
+            </Select>
+          </FormControl>
+        </form>
         <SubmitBtn onClick={this.registerUser}>Sign Up</SubmitBtn>
         <LineSeperator />
         <HorizontalWrapper>
@@ -146,4 +166,4 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+export default withStyles(styles)(SignUp);

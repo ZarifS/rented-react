@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import BrowseProperties from "./BrowseProperties";
 import {
   Drawer,
   Button,
@@ -31,7 +32,7 @@ const allNavigationPaths = [
   {
     name: "Browse",
     url: "/",
-    icon: <ShoppingCart />
+    icon: <ShoppingCart />,
   }
 ];
 
