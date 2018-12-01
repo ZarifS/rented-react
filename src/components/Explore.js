@@ -11,6 +11,9 @@ const styles = theme => ({
     },
 
     paperExploreSection: {
+        display: 'flex',
+        alignItems: 'center',
+        overflow: 'hidden',
         height: 300,
         textAlign: 'center',
         justifyContent: 'center',
@@ -30,8 +33,30 @@ const styles = theme => ({
     },
   });
 
+  const ExploreImage = styled.img`
+    flex-shrink: 0;
+    min-width: 100%;
+    min-height: 100%;
+  `
 
-class Featured extends Component {
+  const ExploreButton = styled.button`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #FFFFFF;
+    color: gray;
+    font-size: 12px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: 800;
+  `;
+
+
+class Explore extends Component {
   constructor(props) {
     super(props);
 
@@ -45,7 +70,10 @@ class Featured extends Component {
     return (
       <Grid container spacing={24}>
         <Grid item xs={12}>
-            <Paper className={classes.paperExploreSection}> EXPLORE </Paper>
+            <Paper className={classes.paperExploreSection}> 
+                <ExploreImage src={require('../images/explore.jpg')}/>
+                <ExploreButton>EXPLORE PROPERTIES ></ExploreButton>
+            </Paper>
         </Grid>
         <Grid item xs={12}>
             <h3>Featured </h3>
@@ -68,4 +96,4 @@ class Featured extends Component {
   }
 }
 
-export default withStyles(styles)(Featured);
+export default withStyles(styles)(Explore);

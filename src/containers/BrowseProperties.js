@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Search from '../components/Search';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
-import Featured from '../components/Featured';
+import Explore from '../components/Explore';
 import SearchResults from '../components/SearchResults';
 
 const styles = theme => ({
@@ -58,7 +58,7 @@ class BrowseProperties extends Component {
             <Grid item xs={12}>
                 <Search callbackFromParent={this.searchBarCallback}/>
             </Grid>
-            {this.state.isSearchResultsVisible ? <SearchResults searchValue={this.state.searchValue} callbackFromParent={this.searchResultsCallback}/> :<Featured/>}
+            {this.state.isSearchResultsVisible ? <SearchResults searchValue={this.state.searchValue} callbackFromParent={this.searchResultsCallback}/> :<Explore/>}
         </Grid>
       </div>
     );
