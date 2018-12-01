@@ -46,7 +46,7 @@ const Text = styled.text`
   font-size: 16px;
 `;
 
-class LoginInputForm extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -57,17 +57,12 @@ class LoginInputForm extends Component {
     };
   }
 
-  handleEmailChange = e => {
-    this.setState({
-      email: e.target.value
-    });
-  };
 
-  handlePasswordChange = e => {
+  handleChange = (e) => {
     this.setState({
-      password: e.target.value
+      [e.target.name]: e.target.value
     });
-  };
+  }
 
   validateUser = () => {
     if (!this.areInputFormsEmpty()) {
@@ -94,14 +89,14 @@ class LoginInputForm extends Component {
           name="email"
           placeholder="Email Address"
           defaultChecked={this.state.email}
-          onChange={this.handleEmailChange}
+          onChange={this.handleChange}
         />
         <Input
           type="text"
           name="password"
           placeholder="Password"
           defaultChecked={this.state.password}
-          onChange={this.handlePasswordChange}
+          onChange={this.handleChange}
         />
         <SubmitBtn onClick={this.validateUser}>Log in</SubmitBtn>
         <LineSeperator />
@@ -113,4 +108,4 @@ class LoginInputForm extends Component {
   }
 }
 
-export default LoginInputForm;
+export default Login;

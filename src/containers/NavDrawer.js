@@ -7,6 +7,7 @@ import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import BrowseProperties from "./BrowseProperties";
 import { Link } from "react-router-dom";
 import {
   Home,
@@ -30,7 +31,7 @@ const allNavigationPaths = [
   {
     name: "Browse",
     url: "/",
-    icon: <ShoppingCart />
+    icon: <ShoppingCart />,
   }
 ];
 

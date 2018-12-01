@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropertiesList from "../containers/PropertiesList";
+import BrowseProperties from "./BrowseProperties";
 
 class Home extends Component {
   render = () => {
@@ -15,7 +16,7 @@ class Home extends Component {
     ];
     return (
       <div className="container">
-        <PropertiesList properties={properties} />
+        <BrowseProperties/>
       </div>
     );
   };
