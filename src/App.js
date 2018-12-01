@@ -24,12 +24,12 @@ class App extends Component {
           <NavBar user={this.state.user} setUser={this.setUser} />
           <Route path="/" exact component={Home} />
           <Route
-            path="/ownerProperties"
+            path="/profile/owned"
             exact
             render={props => <PropertiesList {...props} isAuthed={true} />}
           />
           <Route
-            path="/rentedProperties"
+            path="/profile/rented"
             exact
             render={props => <PropertiesList {...props} isAuthed={true} />}
           />

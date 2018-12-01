@@ -1,12 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
+import {
+  Drawer,
+  Button,
+  List,
+  Divider,
+  ListItem,
+  ListItemIcon
+} from "@material-ui/core";
 import { Link } from "react-router-dom";
 import {
   Home,
@@ -15,7 +17,6 @@ import {
   AccountBalance,
   ShoppingCart,
   AccountBox,
-  CreditCard,
   Build,
   Bookmark
 } from "@material-ui/icons";
@@ -31,24 +32,6 @@ const allNavigationPaths = [
     name: "Browse",
     url: "/",
     icon: <ShoppingCart />
-  }
-];
-
-const accountNavigationPaths = [
-  {
-    name: "Profile",
-    url: "/profile",
-    icon: <AccountBox />
-  },
-  {
-    name: "Payment",
-    url: "/profile/credit",
-    icon: <CreditCard />
-  },
-  {
-    name: "Manage Properties",
-    url: "/profile/editProperties",
-    icon: <Build />
   }
 ];
 
@@ -70,8 +53,21 @@ const userNavigationPaths = [
   },
   {
     name: "Visitation List",
-    url: "/profile/editProperties",
+    url: "/profile/visitList",
     icon: <Bookmark />
+  },
+  {
+    name: "Manage Properties",
+    url: "/profile/editProperties",
+    icon: <Build />
+  }
+];
+
+const accountNavigationPaths = [
+  {
+    name: "Profile",
+    url: "/profile/setup",
+    icon: <AccountBox />
   }
 ];
 
