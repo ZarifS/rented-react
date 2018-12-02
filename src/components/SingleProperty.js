@@ -26,7 +26,7 @@ class SingleProperty extends React.Component {
     let result = [];
     for (let urlKey in picture_urls) {
       result.push(
-        <div>
+        <div key={urlKey}>
           <img src={picture_urls[urlKey]} />
         </div>
       );
