@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
 const Label=styled.label`
     padding: .5em 1em .5em 0;
     flex: 1;
@@ -89,6 +90,12 @@ const styles=theme=>({
     input: {
         display: 'none',
       },
+    snackbar:{
+        position:'fixed',
+    },
+    close: {
+        padding: theme.spacing.unit / 2,
+      },
     
 });
 const types=[
@@ -122,7 +129,8 @@ class CreateProperty extends Component{
             allImages:[],
             imageURLS:[],
             errMessage:"",
-            available: false
+            available: false,
+            open:false
         };
         this.handleChange=this.handleChange.bind(this);
         this.handleInputChange=this.handleInputChange.bind(this);
@@ -191,6 +199,13 @@ class CreateProperty extends Component{
             [name]: value
         });
     }
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({ open: false });
+      };
     handleSubmit(e){
         var valid=this.validateInput();
         const url='http://localhost:8000/api/addListing';
@@ -224,10 +239,13 @@ class CreateProperty extends Component{
                     console.log(res.data);
                 }).catch(err=>{
                     console.log("error in post property call",err);
+                    this.setState({errMessage:"Error when adding property",open:true});
                 });
-
-
+                this.setState({errMessage:"Successfully added Property",open:true});
             }
+        }else{
+            console.log("Not all fields were filled");
+            this.setState({errMessage:"Not all fields are filled",open:true});
         }
 
         e.preventDefault();
@@ -243,7 +261,7 @@ class CreateProperty extends Component{
         const { classes }=this.props;
         return(
             <form className={classes.container}>
-                <TextField name="title" label="Title" className={classes.textField} PlaceHolder="Title"  value={this.state.title} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                <TextField error={this.state.title===""} helperText={this.state.title === "" ? 'Required!' : ' '} name="title" label="Title" className={classes.textField} PlaceHolder="Title"  value={this.state.title} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
                 <TextField name="type" select label="Property Type" className={classes.textField} value={this.state.type} onChange={this.handleChange} SelectProps={{MenuProps:{className:classes.menu,}}}
                             helperText="Please select Property Type" margin="normal" variant="outlined">
                         {types.map(option=>(
@@ -253,19 +271,19 @@ class CreateProperty extends Component{
                         ))
                         }
                 </TextField>
-                <TextField name="street" label="Street"  className={classes.textField} PlaceHolder="Street" value={this.state.street} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                <TextField error={this.state.street===""} helperText={this.state.street === "" ? 'Required!' : ' '}  name="street" label="Street"  className={classes.textField} PlaceHolder="Street" value={this.state.street} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
                 <div className={classes.container1}>
-                    <TextField name="streetNumber" label="Street Number"  className={classes.textField} PlaceHolder="Street Number" value={this.state.streetNumber} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                    <TextField name="city" label="City"  className={classes.textField} PlaceHolder="City" value={this.state.city} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                    <TextField name="province" label="Province"  className={classes.textField} PlaceHolder="Province" value={this.state.province} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                    <TextField name="country" label="Country"  className={classes.textField} PlaceHolder="Country" value={this.state.country} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                    <TextField name="postalCode" label="Postal Code"  className={classes.textField} PlaceHolder="Postal Code" value={this.state.postalCode} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField error={this.state.streetNumber===""} helperText={this.state.streetNumber === "" ? 'Required!' : ' '}  name="streetNumber" label="Street Number"  className={classes.textField} PlaceHolder="Street Number" value={this.state.streetNumber} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField error={this.state.city===""} helperText={this.state.city === "" ? 'Required!' : ' '}  name="city" label="City"  className={classes.textField} PlaceHolder="City" value={this.state.city} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField error={this.state.province===""} helperText={this.state.province === "" ? 'Required!' : ' '}  name="province" label="Province"  className={classes.textField} PlaceHolder="Province" value={this.state.province} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField error={this.state.country===""} helperText={this.state.country === "" ? 'Required!' : ' '}  name="country" label="Country"  className={classes.textField} PlaceHolder="Country" value={this.state.country} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField error={this.state.postalCode===""} helperText={this.state.postalCode === "" ? 'Required!' : ' '}  name="postalCode" label="Postal Code"  className={classes.textField} PlaceHolder="Postal Code" value={this.state.postalCode} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
                     </div>
                 <div className={classes.container1}>
-                <TextField name="numBedrooms" label="Bedrooms" InputLabelProps={{shrink: true,}} className={classes.textField}  type="number" value={this.state.numBedrooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                <TextField name="numBathrooms"  label="Bathrooms" InputLabelProps={{shrink: true,}} type="number" className={classes.textField}  value={this.state.numBathrooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>                
-                <TextField name="numOtherRooms" label="Other Rooms" InputLabelProps={{shrink: true,}} type="number" className={classes.textField}  value={this.state.numOtherRooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>                
-                <TextField name="rent" label="Rent" type="number" InputLabelProps={{shrink: true,}} className={classes.textField}  value={this.state.rent} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                <TextField error={this.state.numBedrooms===""} name="numBedrooms" label="Bedrooms" InputLabelProps={{shrink: true,}} className={classes.textField}  type="number" value={this.state.numBedrooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                <TextField error={this.state.numBathrooms===""} name="numBathrooms"  label="Bathrooms" InputLabelProps={{shrink: true,}} type="number" className={classes.textField}  value={this.state.numBathrooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>                
+                <TextField error={this.state.numOtherRooms===""} name="numOtherRooms" label="Other Rooms" InputLabelProps={{shrink: true,}} type="number" className={classes.textField}  value={this.state.numOtherRooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>                
+                <TextField error={this.state.rent===""} name="rent" label="Rent" type="number" InputLabelProps={{shrink: true,}} className={classes.textField}  value={this.state.rent} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
                 </div>
                 <FormControlLabel
                     control={
@@ -304,6 +322,22 @@ class CreateProperty extends Component{
                 <Row>
                 <Button className={classes.button} variant="contained" color="primary" onClick={this.handleSubmit}  >Add Property</Button>
                 </Row>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.open}
+                    autoHideDuration={4000}
+                    onClose={this.handleClose}
+                    message={this.state.errMessage}
+                    action={
+                    <Button color="inherit" size="small" onClick={this.handleClose}>
+                        Ok
+                    </Button>
+                    }
+                    className={classes.snackbar}
+                    />
             </form>
         );
     }
