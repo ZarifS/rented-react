@@ -1,6 +1,72 @@
 import styled from "styled-components";
 import React, { Component } from "react";
 
+class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: "",
+      password: "",
+      open: false
+    };
+  }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  validateUser = () => {
+    if (!this.areInputFormsEmpty()) {
+      //validated user
+      console.log(this.state.email);
+      console.log(this.state.password);
+      this.props.auth
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .catch(err => {
+          console.log(err.message);
+        });
+    } else {
+      console.log("Invalid Email or Password");
+    }
+  };
+
+  areInputFormsEmpty = () => {
+    if (this.state.email === "" || this.state.password === "") {
+      return true;
+    }
+    return false;
+  };
+
+  render() {
+    return (
+      <FormContainer>
+        <Input
+          type="text"
+          name="email"
+          placeholder="Email Address"
+          defaultChecked={this.state.email}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="password"
+          placeholder="Password"
+          defaultChecked={this.state.password}
+          onChange={this.handleChange}
+        />
+        <SubmitBtn onClick={this.validateUser}>Log in</SubmitBtn>
+        <LineSeperator />
+        <HorizontalWrapper>
+          <Text>Dont have an account? Sign Up</Text>
+        </HorizontalWrapper>
+      </FormContainer>
+    );
+  }
+}
+
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,67 +111,5 @@ const HorizontalWrapper = styled.div`
 const Text = styled.text`
   font-size: 16px;
 `;
-
-class Login extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      email: "",
-      password: "",
-      open: false
-    };
-  }
-
-
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
-  validateUser = () => {
-    if (!this.areInputFormsEmpty()) {
-      //validated user
-      console.log(this.state.email);
-      console.log(this.state.password);
-    } else {
-      console.log("Invalid Email or Password");
-    }
-  };
-
-  areInputFormsEmpty = () => {
-    if (this.state.email === "" || this.state.password === "") {
-      return true;
-    }
-    return false;
-  };
-
-  render() {
-    return (
-      <FormContainer>
-        <Input
-          type="text"
-          name="email"
-          placeholder="Email Address"
-          defaultChecked={this.state.email}
-          onChange={this.handleChange}
-        />
-        <Input
-          type="text"
-          name="password"
-          placeholder="Password"
-          defaultChecked={this.state.password}
-          onChange={this.handleChange}
-        />
-        <SubmitBtn onClick={this.validateUser}>Log in</SubmitBtn>
-        <LineSeperator />
-        <HorizontalWrapper>
-          <Text>Dont have an account? Sign Up</Text>
-        </HorizontalWrapper>
-      </FormContainer>
-    );
-  }
-}
 
 export default Login;

@@ -15,15 +15,30 @@ import ModalWrapper from "../components/ModalWrapper";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
+import firebase from "firebase";
+const config = require("../secret-keys/rented-project-key.json");
+firebase.initializeApp(config);
+const authorized = firebase.auth();
+
 class NavBar extends Component {
   constructor(props) {
     super(props);
-    let auth = this.props.user ? true : false;
     this.state = {
-      auth,
       anchorEl: null
     };
   }
+
+  componentDidMount = () => {
+    authorized.onAuthStateChanged(firebaseUser => {
+      if (firebaseUser) {
+        console.log("firebaseUser: ", firebaseUser);
+        this.props.setUser(firebaseUser);
+      } else {
+        console.log("not logged in");
+        this.props.setUser(null);
+      }
+    });
+  };
 
   handleChange = event => {
     this.setState({ auth: event.target.checked });
@@ -37,9 +52,15 @@ class NavBar extends Component {
     this.setState({ anchorEl: null });
   };
 
+  handleLogoutClose = () => {
+    authorized.signOut();
+    this.setState({ anchorEl: null });
+  };
+
   render() {
     const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { anchorEl } = this.state;
+    const auth = this.props.user === null ? false : true;
     const open = Boolean(anchorEl);
 
     return (
@@ -78,7 +99,7 @@ class NavBar extends Component {
                   <MenuItem onClick={this.handleClose}>
                     <Link to="/profile/setup">Profile</Link>
                   </MenuItem>
-                  <MenuItem onClick={this.handleClose}>
+                  <MenuItem onClick={this.handleLogoutClose}>
                     <Link to="/profile/logout">Logout</Link>
                   </MenuItem>
                 </Menu>
@@ -87,10 +108,10 @@ class NavBar extends Component {
             {!auth && (
               <div>
                 <ModalWrapper description="Login">
-                  <Login />
+                  <Login logIn={this.props.logIn} auth={authorized} />
                 </ModalWrapper>
                 <ModalWrapper description="Sign up">
-                  <SignUp />
+                  <SignUp signUp={this.props.signUp} auth={authorized} />
                 </ModalWrapper>
               </div>
             )}

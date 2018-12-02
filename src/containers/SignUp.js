@@ -1,26 +1,129 @@
 import styled from "styled-components";
 import React, { Component } from "react";
-import { withStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import { withStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
+class SignUp extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      accountType: "user"
+    };
+  }
+
+  handleChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  };
+
+  registerUser = () => {
+    if (!this.areInputFormsEmpty()) {
+      //register User
+      console.log(this.state.firstName);
+      console.log(this.state.lastName);
+      console.log(this.state.email);
+      console.log(this.state.password);
+      this.props.auth
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+        .catch(err => {
+          console.log(err.message);
+        });
+    } else {
+      console.log("Please fill in all fields");
+    }
+  };
+
+  areInputFormsEmpty = () => {
+    if (
+      this.state.firstName === "" ||
+      this.state.lastName === "" ||
+      this.state.email === "" ||
+      this.state.password === ""
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <FormContainer>
+        <Input
+          type="text"
+          name="firstName"
+          placeholder="First Name"
+          defaultChecked={this.state.firstName}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          defaultChecked={this.state.lastName}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="email"
+          placeholder="Email Address"
+          defaultChecked={this.state.email}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="password"
+          placeholder="Password"
+          defaultChecked={this.state.password}
+          onChange={this.handleChange}
+        />
+        <form className={classes.root} autoComplete="off">
+          <FormControl className={classes.formControl}>
+            <InputLabel>Account Type</InputLabel>
+            <Select
+              value={this.state.accountType}
+              onChange={this.handleChange}
+              inputProps={{
+                name: "accountType"
+              }}
+            >
+              <MenuItem value={"user"}>User</MenuItem>
+              <MenuItem value={"agent"}>Agent</MenuItem>
+            </Select>
+          </FormControl>
+        </form>
+        <SubmitBtn onClick={this.registerUser}>Sign Up</SubmitBtn>
+        <LineSeperator />
+        <HorizontalWrapper>
+          <Text>Already have an account? Log in</Text>
+        </HorizontalWrapper>
+      </FormContainer>
+    );
+  }
+}
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap"
   },
   formControl: {
     margin: theme.spacing.unit,
-    minWidth: 120,
+    minWidth: 120
   },
   selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-  },
+    marginTop: theme.spacing.unit * 2
+  }
 });
-
 
 const FormContainer = styled.div`
   display: flex;
@@ -66,104 +169,5 @@ const HorizontalWrapper = styled.div`
 const Text = styled.text`
   font-size: 16px;
 `;
-
-class SignUp extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      accountType: 'user',
-    };
-  }
-
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
-  registerUser = () => {
-    if (!this.areInputFormsEmpty()) {
-      //register User
-      console.log(this.state.firstName);
-      console.log(this.state.lastName);
-      console.log(this.state.email);
-      console.log(this.state.password);
-    } else {
-      console.log("Please fill in all fields");
-    }
-  };
-
-  areInputFormsEmpty = () => {
-    if (
-      this.state.firstName === "" ||
-      (this.state.lastName === "") || (this.state.email === "") ||
-      this.state.password === ""
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <FormContainer>
-        <Input
-          type="text"
-          name="firstname"
-          placeholder="First Name"
-          defaultChecked={this.state.firstName}
-          onChange={this.handleChange}
-        />
-        <Input
-          type="text"
-          name="firstname"
-          placeholder="Last Name"
-          defaultChecked={this.state.lastName}
-          onChange={this.handleChange}
-        />
-        <Input
-          type="text"
-          name="email"
-          placeholder="Email Address"
-          defaultChecked={this.state.email}
-          onChange={this.handleChange}
-        />
-        <Input
-          type="text"
-          name="Create a password"
-          placeholder="Password"
-          defaultChecked={this.state.password}
-          onChange={this.handleChange}
-        />
-        <form className={classes.root} autoComplete="off">
-          <FormControl className={classes.formControl}>
-            <InputLabel>Account Type</InputLabel>
-            <Select
-              value={this.state.accountType}
-              onChange={this.handleChange}
-              inputProps={{
-                name: 'accountType',
-              }}
-            >
-              <MenuItem value={'user'}>User</MenuItem>
-              <MenuItem value={'agent'}>Agent</MenuItem>
-            </Select>
-          </FormControl>
-        </form>
-        <SubmitBtn onClick={this.registerUser}>Sign Up</SubmitBtn>
-        <LineSeperator />
-        <HorizontalWrapper>
-          <Text>Already have an account? Log in</Text>
-        </HorizontalWrapper>
-      </FormContainer>
-    );
-  }
-}
 
 export default withStyles(styles)(SignUp);

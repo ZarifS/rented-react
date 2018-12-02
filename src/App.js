@@ -9,25 +9,29 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: {name: "Pasoon"}
+      firebaseUser: null
     };
   }
 
-  setUser = user => {
-    this.setState({ user });
+  setUser = val => {
+    this.setState({ firebaseUser: val });
   };
 
   render() {
     return (
       <Router>
         <div>
-          <NavBar user={this.state.user} setUser={this.setUser} />
+          <NavBar user={this.state.firebaseUser} setUser={this.setUser} />
           <div className="container">
             <Route
               path="/"
               exact
               render={props => (
-                <Home {...props} isAuthed={true} user={this.state.user} />
+                <Home
+                  {...props}
+                  isAuthed={true}
+                  user={this.state.firebaseUser}
+                />
               )}
             />
             <Route
