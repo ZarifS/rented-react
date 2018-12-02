@@ -15,7 +15,14 @@ class SignUp extends Component {
       lastName: "",
       email: "",
       password: "",
-      accountType: "user"
+      accountType: "user",
+      street: "",
+      city: "",
+      street_number: "",
+      country: "",
+      province: "",
+      postal_code: "",
+      unit_number: ""
     };
   }
 
@@ -32,6 +39,20 @@ class SignUp extends Component {
       console.log(this.state.lastName);
       console.log(this.state.email);
       console.log(this.state.password);
+      let userToAdd = {
+        is_agent: this.state.accountType === "user" ? false : true,
+        email: this.state.email,
+        password: this.state.password,
+        first_name: this.state.firstName,
+        last_name: this.state.lastName,
+        street: this.state.street,
+        city: this.state.city,
+        street_number: this.state.street_number,
+        country: this.state.country,
+        province: this.state.province,
+        postal_code: this.state.postal_code,
+        unit_number: this.state.unit_number
+      };
       this.props.auth
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
         .catch(err => {
@@ -47,7 +68,14 @@ class SignUp extends Component {
       this.state.firstName === "" ||
       this.state.lastName === "" ||
       this.state.email === "" ||
-      this.state.password === ""
+      this.state.password === "" ||
+      this.state.street === "" ||
+      this.state.city === "" ||
+      this.state.street_number === "" ||
+      this.state.country === "" ||
+      this.state.province === "" ||
+      this.state.postal_code === "" ||
+      this.state.unit_number === ""
     ) {
       return true;
     }
@@ -80,12 +108,62 @@ class SignUp extends Component {
           onChange={this.handleChange}
         />
         <Input
-          type="text"
+          type="password"
           name="password"
           placeholder="Password"
           defaultChecked={this.state.password}
           onChange={this.handleChange}
         />
+        <Input
+          type="text"
+          name="street_number"
+          placeholder="Street Number"
+          defaultChecked={this.state.street_number}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="unit_number"
+          placeholder="Unit Number (if applicable)"
+          defaultChecked={this.state.unit_number}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="street"
+          placeholder="Street"
+          defaultChecked={this.state.street}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="city"
+          placeholder="City"
+          defaultChecked={this.state.city}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="province"
+          placeholder="Province"
+          defaultChecked={this.state.province}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="country"
+          placeholder="Country"
+          defaultChecked={this.state.country}
+          onChange={this.handleChange}
+        />
+        <Input
+          type="text"
+          name="postal_code"
+          placeholder="Postal Code"
+          defaultChecked={this.state.postal_code}
+          onChange={this.handleChange}
+        />
+
         <form className={classes.root} autoComplete="off">
           <FormControl className={classes.formControl}>
             <InputLabel>Account Type</InputLabel>
@@ -101,11 +179,8 @@ class SignUp extends Component {
             </Select>
           </FormControl>
         </form>
+
         <SubmitBtn onClick={this.registerUser}>Sign Up</SubmitBtn>
-        <LineSeperator />
-        <HorizontalWrapper>
-          <Text>Already have an account? Log in</Text>
-        </HorizontalWrapper>
       </FormContainer>
     );
   }
