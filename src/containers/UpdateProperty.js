@@ -8,6 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
 const Label=styled.label`
     padding: .5em 1em .5em 0;
     flex: 1;
@@ -88,6 +90,12 @@ const styles=theme=>({
     input: {
         display: 'none',
       },
+    snackbar:{
+        position:'fixed',
+    },
+    close: {
+        padding: theme.spacing.unit / 2,
+      },
     
 });
 const types=[
@@ -104,42 +112,27 @@ class UpdateProperty extends Component{
     constructor(props){
         super(props);
         this.imageInput=React.createRef();
-        this.property = {
-            title: "Cozy Apartment in Orleans",
-            imageUrl:
-              "https://images.unsplash.com/photo-1515263487990-61b07816b324?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c02fb96f9cfc16d3649835b75d1b2033&auto=format&fit=crop&w=1350&q=80",
-            type: 'Apartment',
-            address: {
-              streetNumber: "1674",
-              street: "Grey Nuns Dr.",
-              city: "Ottawa",
-              province: "ON",
-              country: "CANADA",
-              postalCode: "K1C 1B5"
-            },
-            bedrooms: 4,
-            bathrooms: 3,
-            other: 0,
-            rent: 1200,
-            description:
-              "My place is close to UQAM, Cégep Vieux-Montréal, Berri-Uqam metro station, Gare d'autocars de Montréal (main bus station), Théâtre St-Denis, Quartier des Spectacles, BAnQ Library, The Village, Patrick's Pub irlandais, Café Hookah Lounge, Hospital, .... You’ll love my place because of the neighbourhood, the proximity to absolutely everything, year round festivals, best restaurants, pubs and bars in the city! My place is good for couples, solo adventurers, and business travellers.",
-            image: [],
-            allImages: [],
-            imageURLS: [],
-            errMessage: "",
-            available: true
-          };
         this.state={
-            title: this.property.title,
-            numBedrooms: this.property.bedrooms,
-            numBathrooms:this.property.bathrooms,
-            numOtherRooms:this.property.other,
-            rent:this.property.rent,
+            owner_uid:"",
+            type: "Apartment",
+            title: "",
+            street: "",
+            streetNumber: "",
+            city: "",
+            province:"",
+            country:"",
+            postalCode:"",
+            numBedrooms: 0,
+            numBathrooms:0,
+            numOtherRooms:0,
+            rent:0,
             image: [],
             allImages:[],
-            imageURLS:[this.property.imageUrl],//property.main,property.pic2,property.pic3,property.pic4,property.pic5
+            imageURLS:[],
             errMessage:"",
-            available:this.property.available
+            available: false,
+            disabledUpdate:false,
+            open:false
         };
         this.handleInputChange=this.handleInputChange.bind(this);
         this.handleSubmit=this.handleSubmit.bind(this);
@@ -147,7 +140,46 @@ class UpdateProperty extends Component{
         this.fileUpload=this.fileUpload.bind(this);
         this.handleCheck=this.handleCheck.bind(this);
     }
-   
+    componentDidMount = () => {
+        const userUID=this.props.user.uid;
+        const propertyID=this.props.listing_id;
+        if(propertyID){
+            const url="localhost:8000/api/getListings/"+propertyID;
+            axios.get(url).then(res=>{
+                let property={...res.data };
+                console.log(property);
+                if(!property.owner_uid===userUID){
+                    this.setState({
+                        disabledUpdate:true
+                    });
+                }
+                this.setState({
+                    owner_uid: property.owner_uid,
+                    type: property.type,
+                    title: property.title,
+                    street: property.street,
+                    streetNumber: property.street_number,
+                    city: property.city,
+                    province:property.province,
+                    country:property.country,
+                    postalCode:property.postal_code,
+                    numBedrooms: property.bedrooms,
+                    numBathrooms:property.bathrooms,
+                    numOtherRooms:property.otherRooms,
+                    rent:property.rent,
+                    imageURLS:[property.picture_urls.main,property.picture_urls.pic2,property.picture_urls.pic3,property.picture_urls.pic4,property.picture_urls.pic5],
+                    available: property.available
+                });
+            }).catch(err=>{
+                console.log("Error while getting listing, ", err)
+                this.setState({errMessage:"Error while fetching property",open:true});
+            });
+        }else{
+            console.log("Listing id not provided");
+            this.setState({errMessage:"Listing id not provided",open:true});
+        }
+        
+    };
     fileUpload=()=>{
         const currImages=this.state.allImages;
         for (var i=0;i<this.state.image.length;i++){
@@ -204,10 +236,51 @@ class UpdateProperty extends Component{
             [name]: value
         });
     }
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({ open: false });
+      };
     handleSubmit(e){
         var valid=this.validateInput();
+        const url='http://localhost:8000/api/updateListing'+this.props.listing_id;
         if(valid){
-
+            let user=this.props.user;
+            if(user && user.uid===this.state.owner_uid){
+                const property1={
+                    title: this.state.title,
+                    bathrooms: parseInt(this.state.numBathrooms),
+                    bedrooms: parseInt(this.state.numBedrooms),
+                    otherRooms: parseInt(this.state.numOtherRooms),
+                    type: this.state.type,
+                    available: this.state.available,
+                    picture_urls:{
+                        main:"",
+                        pic2:"",
+                        pic3:"",
+                        pic4:"",
+                        pic5:"",
+                    }
+                }
+                console.log(property1);
+                axios.post(url,property1).then(res=>{
+                    console.log(res);
+                    console.log(res.data);
+                }).catch(err=>{
+                    console.log("error in update post property",err);
+                    this.setState({errMessage:"Error when updating property",open:true});
+                });
+                this.setState({errMessage:"Successfully updated Property",open:true});
+            }
+            else{
+                console.log("not allowed to update other owners properties");
+            }
+        }
+        else{
+            console.log("some fields were not filled");
+            this.setState({errMessage:"Not all fields are filled",open:true});
         }
 
         e.preventDefault();
@@ -225,8 +298,8 @@ class UpdateProperty extends Component{
         const { classes }=this.props;
         return(
             <form className={classes.container}>
-                <TextField name="title" label="Title" className={classes.textField} PlaceHolder="Title"  value={this.state.title} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                <TextField disabled name="type" select label="Property Type" className={classes.textField} value={this.property.type} SelectProps={{MenuProps:{className:classes.menu,}}}
+                <TextField error={this.state.title===""} helperText={this.state.title === "" ? 'Required!' : ' '} name="title" label="Title" className={classes.textField} PlaceHolder="Title"  value={this.state.title} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                <TextField disabled name="type" select label="Property Type" className={classes.textField} value={this.state.type} SelectProps={{MenuProps:{className:classes.menu,}}}
                             helperText="Please select Property Type" margin="normal" variant="outlined">
                         {types.map(option=>(
                             <MenuItem key={option.value} value={option.value}>
@@ -235,19 +308,19 @@ class UpdateProperty extends Component{
                         ))
                         }
                 </TextField>
-                <TextField disabled name="street" label="Street"  className={classes.textField} PlaceHolder="Street" value={this.property.address.street} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                <TextField disabled name="street" label="Street"  className={classes.textField} PlaceHolder="Street" value={this.state.street} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
                 <div className={classes.container1}>
-                    <TextField disabled name="streetNumber" label="Street Number"  className={classes.textField} PlaceHolder="Street Number" value={this.property.address.streetNumber} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                    <TextField disabled name="city" label="City"  className={classes.textField} PlaceHolder="City" value={this.property.address.city} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                    <TextField disabled name="province" label="Province"  className={classes.textField} PlaceHolder="Province" value={this.property.address.province} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                    <TextField disabled name="country" label="Country"  className={classes.textField} PlaceHolder="Country" value={this.property.address.country} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                    <TextField disabled name="postalCode" label="Postal Code"  className={classes.textField} PlaceHolder="Postal Code" value={this.property.address.postalCode} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField disabled name="streetNumber" label="Street Number"  className={classes.textField} PlaceHolder="Street Number" value={this.state.streetNumber} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField disabled name="city" label="City"  className={classes.textField} PlaceHolder="City" value={this.state.city} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField disabled name="province" label="Province"  className={classes.textField} PlaceHolder="Province" value={this.state.province} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField disabled name="country" label="Country"  className={classes.textField} PlaceHolder="Country" value={this.state.country} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                    <TextField disabled name="postalCode" label="Postal Code"  className={classes.textField} PlaceHolder="Postal Code" value={this.state.postalCode} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
                     </div>
                 <div className={classes.container1}>
-                <TextField name="numBedrooms" label="Bedrooms" InputLabelProps={{shrink: true,}} className={classes.textField}  type="number" value={this.state.numBedrooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
-                <TextField name="numBathrooms"  label="Bathrooms" InputLabelProps={{shrink: true,}} type="number" className={classes.textField}  value={this.state.numBathrooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>                
-                <TextField name="numOtherRooms" label="Other Rooms" InputLabelProps={{shrink: true,}} type="number" className={classes.textField}  value={this.state.numOtherRooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>                
-                <TextField name="rent" label="Rent" type="number" InputLabelProps={{shrink: true,}} className={classes.textField}  value={this.state.rent} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                <TextField error={this.state.numBedrooms===""} helperText={this.state.numBedrooms === "" ? 'Required!' : ' '} name="numBedrooms" label="Bedrooms" InputLabelProps={{shrink: true,}} className={classes.textField}  type="number" value={this.state.numBedrooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
+                <TextField error={this.state.numBathrooms===""} helperText={this.state.numBathrooms === "" ? 'Required!' : ' '} name="numBathrooms"  label="Bathrooms" InputLabelProps={{shrink: true,}} type="number" className={classes.textField}  value={this.state.numBathrooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>                
+                <TextField error={this.state.numOtherRooms===""} helperText={this.state.numOtherRooms === "" ? 'Required!' : ' '} name="numOtherRooms" label="Other Rooms" InputLabelProps={{shrink: true,}} type="number" className={classes.textField}  value={this.state.numOtherRooms} onChange={this.handleInputChange} margin="normal" variant="outlined"/>                
+                <TextField error={this.state.rent===""} helperText={this.state.rent === "" ? 'Required!' : ' '} name="rent" label="Rent" type="number" InputLabelProps={{shrink: true,}} className={classes.textField}  value={this.state.rent} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
                 </div>
                 <FormControlLabel
                     control={
@@ -284,8 +357,24 @@ class UpdateProperty extends Component{
                 </ul> 
                 <br/>
                 <Row>
-                <Button className={classes.button} variant="contained" color="primary" onClick={this.handleSubmit}  >Add Property</Button>
+                <Button className={classes.button} disabled={this.state.disabledUpdate} variant="contained" color="primary" onClick={this.handleSubmit}  >Add Property</Button>
                 </Row>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={this.state.open}
+                    autoHideDuration={4000}
+                    onClose={this.handleClose}
+                    message={this.state.errMessage}
+                    action={
+                    <Button color="inherit" size="small" onClick={this.handleClose}>
+                        Ok
+                    </Button>
+                    }
+                    className={classes.snackbar}
+                    />
             </form>
         );
     }
