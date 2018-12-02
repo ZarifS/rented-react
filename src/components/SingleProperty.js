@@ -17,7 +17,8 @@ import { Bookmark } from "@material-ui/icons";
 
 const styles = theme => ({
   card: {
-    marginBottom: "20px"
+    marginBottom: "20px",
+    widht: "250px"
   },
   media: {
     height: 0,
@@ -54,8 +55,21 @@ class SingleProperty extends React.Component {
   render() {
     const { classes } = this.props;
     const property = { ...this.props.property };
-    const { address, owner } = { ...this.props.property };
+    const { owner } = { ...this.props.property };
     const { profileURL, name } = { ...owner };
+    const address = {
+      streetNumber: property.street_number,
+      streetName: property.street,
+      city: property.city,
+      province: property.province,
+      country: property.country,
+      postalCode: property.postalCode,
+    }
+
+    const images = {
+      pic1: property.picture_urls.pic1
+    }
+
     return (
       <Card className={classes.card}>
         <CardHeader
@@ -73,7 +87,7 @@ class SingleProperty extends React.Component {
             </IconButton>
           }
           title={property.name}
-          subheader={address.streetNumber + " " + address.street}
+          subheader={address.streetNumber + " " + address.streetName}
         />
         <CardMedia
           className={classes.media}
@@ -84,18 +98,19 @@ class SingleProperty extends React.Component {
           <Typography component="p">
             <i className="fas fa-bed fa-lg" />
             <span style={{ fontSize: "16px" }}>
-              {"  " + property.numBedrooms + "  "}
+              {"  " + property.bedrooms + "  "}
             </span>
           </Typography>
           <Typography>
             <i className="fas fa-bath fa-lg" />
-            <span style={{ fontSize: "16px" }}>
-              {"    " + property.numBedrooms + "  "}
+            <span style={{ fontSize: "20px" }}>
+              {"    " + property.bathrooms + "  "}
             </span>
           </Typography>
+          <Typography>{property.title}</Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
-          <Typography>${property.rentMonthly}</Typography>
+          <Typography>${property.rent}/Month</Typography>
           <IconButton
             className={classnames(classes.expand, {
               [classes.expandOpen]: this.state.expanded

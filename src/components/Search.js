@@ -22,21 +22,7 @@ import AutoComplete from 'material-ui/AutoComplete';
     }
 
     handleSubmit = () => {
-        // alert('Endpoint: );
-        // fetch()
-        // .then(response => {
-        //     return response.json();
-        // }).then(results => {
-        //   let properties = results.items.map((item) => {
-        //      return(
-        //        {
-        //          
-        //        }
-        //      )
-        //    })
-        //   this.setState({properties: properties})
         this.props.callbackFromParent(this.state.value);
-        // })
       }
 
     render() {

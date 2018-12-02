@@ -49,16 +49,19 @@ const styles = theme => ({
 class Explore extends Component {
   constructor(props) {
     super(props);
-
   }
 
+  handleOnClick = () => {
+    this.props.callbackFromParent();
+  }
+  
   render() {
 
     return (
       <Grid container spacing={24}>
         <Grid item xs={12}>
             <CustomPaper height={300} image={require('../images/explore.jpg')}> 
-                <ExploreButton>EXPLORE PROPERTIES ></ExploreButton>
+                <ExploreButton onClick={this.handleOnClick}>EXPLORE PROPERTIES ></ExploreButton>
             </CustomPaper>
         </Grid>
         <Grid item xs={12}>
