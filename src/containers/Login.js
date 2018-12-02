@@ -51,17 +51,13 @@ class Login extends Component {
           onChange={this.handleChange}
         />
         <Input
-          type="text"
+          type="password"
           name="password"
           placeholder="Password"
           defaultChecked={this.state.password}
           onChange={this.handleChange}
         />
         <SubmitBtn onClick={this.validateUser}>Log in</SubmitBtn>
-        <LineSeperator />
-        <HorizontalWrapper>
-          <Text>Dont have an account? Sign Up</Text>
-        </HorizontalWrapper>
       </FormContainer>
     );
   }
