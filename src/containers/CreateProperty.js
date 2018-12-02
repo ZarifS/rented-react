@@ -193,35 +193,41 @@ class CreateProperty extends Component{
     }
     handleSubmit(e){
         var valid=this.validateInput();
+        const url='http://localhost:8000/api/addListing';
         if(valid){
             let user=this.props.user;
-            const property1={
-                owner_uid:30,
-                title: this.state.title,
-                street: this.state.street,
-                street_number: this.state.streetNumber,
-                city: this.state.city,
-                province: this.state.province,
-                country: this.state.country,
-                postal_code: this.postalCode,
-                bathrooms: parseInt(this.state.numBathrooms),
-                bedrooms: parseInt(this.state.numBedrooms),
-                type: this.state.type,
-                available: this.state.available,
-                picture_urls:{
-                    main: "",
-                    pic2:"",
-                    pic3:"",
-                    pic4:"",
-                    pic5:"",
+            if(user){
+                const property1={
+                    owner_uid:user.uid,
+                    title: this.state.title,
+                    street: this.state.street,
+                    street_number: this.state.streetNumber,
+                    city: this.state.city,
+                    province: this.state.province,
+                    country: this.state.country,
+                    postal_code: this.postalCode,
+                    bathrooms: parseInt(this.state.numBathrooms),
+                    bedrooms: parseInt(this.state.numBedrooms),
+                    type: this.state.type,
+                    available: this.state.available,
+                    picture_urls:{
+                        main: "",
+                        pic2:"",
+                        pic3:"",
+                        pic4:"",
+                        pic5:"",
+                    }
                 }
+                console.log(property1);
+                axios.post(url,property1).then(res=>{
+                    console.log(res);
+                    console.log(res.data);
+                }).catch(err=>{
+                    console.log("error in post property call",err);
+                });
+
+
             }
-            console.log(property1);
-            axios.post('http://localhost:8000/api/addListing',property1).then(res=>{
-                console.log(res);
-                console.log(res.data);
-            });
-            
         }
 
         e.preventDefault();
