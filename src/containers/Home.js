@@ -13,7 +13,6 @@ class Home extends Component {
   componentDidMount = () => {
     axios.get("http://localhost:8000/api/getListings").then(res => {
       let { data } = res;
-      console.log(data);
       if (data) {
         this.setState({ properties: data }, () => {
           console.log("Set properties to : ", this.state.properties);

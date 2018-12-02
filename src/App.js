@@ -6,6 +6,7 @@ import NavBar from "./containers/Navbar";
 import PropertiesList from "./containers/PropertiesList";
 import axios from "axios";
 import ViewProperty from "./containers/ViewProperty";
+import CreateProperty from "./containers/CreateProperty";
 
 class App extends Component {
   constructor(props) {
@@ -66,6 +67,17 @@ class App extends Component {
               path="/view/property"
               exact
               render={props => <ViewProperty {...props} isAuthed={true} />}
+            />
+            <Route
+              path="/create/property"
+              exact
+              render={props => (
+                <CreateProperty
+                  user={this.state.firebaseUser}
+                  {...props}
+                  isAuthed={true}
+                />
+              )}
             />
             <Route
               path="/profile/rented"

@@ -16,7 +16,7 @@ class PropertiesList extends Component {
       });
       return jsxProperties;
     } else {
-      return <div>You don't own any properties</div>;
+      return <div>You don't have any properties in this category</div>;
     }
   };
 
