@@ -5,6 +5,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import axios from "axios";
 
 class SignUp extends Component {
   constructor(props) {
@@ -53,10 +54,26 @@ class SignUp extends Component {
         postal_code: this.state.postal_code,
         unit_number: this.state.unit_number
       };
-      this.props.auth
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      console.log(userToAdd);
+      axios
+        .post("http://localhost:8000/api/createUser", userToAdd)
+        .then(res => {
+          const { uid } = res.data;
+          console.log(uid);
+          const url = "http://localhost:8000/api/getUser/" + uid;
+          axios
+            .get(url)
+            .then(res => {
+              let userToSet = { ...res.data };
+              userToSet.uid = uid;
+              this.props.setUser(userToSet);
+            })
+            .catch(err => {
+              console.log("error in GET user call: ", err);
+            });
+        })
         .catch(err => {
-          console.log(err.message);
+          console.log("error in axios call", err);
         });
     } else {
       console.log("Please fill in all fields");
@@ -74,8 +91,7 @@ class SignUp extends Component {
       this.state.street_number === "" ||
       this.state.country === "" ||
       this.state.province === "" ||
-      this.state.postal_code === "" ||
-      this.state.unit_number === ""
+      this.state.postal_code === ""
     ) {
       return true;
     }

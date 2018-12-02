@@ -4,17 +4,35 @@ import Home from "./containers/Home";
 import "./App.css";
 import NavBar from "./containers/Navbar";
 import PropertiesList from "./containers/PropertiesList";
+import axios from "axios";
+import ViewProperty from "./containers/ViewProperty";
+import CreateProperty from "./containers/CreateProperty";
+import UpdateProperty from "./containers/UpdateProperty";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      firebaseUser: null
+      firebaseUser: null,
+      ownedProperties: []
     };
   }
 
   setUser = val => {
-    this.setState({ firebaseUser: val });
+    this.setState({ firebaseUser: val }, () => {
+      if (this.state.firebaseUser) {
+        const { uid } = this.state.firebaseUser;
+        axios
+          .get("http://localhost:8000/api/getListings/" + uid)
+          .then(res => {
+            let data = res.data;
+            this.setState({ ownedProperties: data });
+          })
+          .catch(e => {
+            console.log("error: ", e.message);
+          });
+      }
+    });
   };
 
   render() {
@@ -37,7 +55,41 @@ class App extends Component {
             <Route
               path="/profile/owned"
               exact
-              render={props => <PropertiesList {...props} isAuthed={true} />}
+              render={props => (
+                <PropertiesList
+                  {...props}
+                  user={this.state.firebaseUser}
+                  isAuthed={true}
+                  properties={this.state.ownedProperties}
+                />
+              )}
+            />
+            <Route
+              path="/view/property"
+              exact
+              render={props => <ViewProperty {...props} isAuthed={true} />}
+            />
+            <Route
+              path="/create/property"
+              exact
+              render={props => (
+                <CreateProperty
+                  user={this.state.firebaseUser}
+                  {...props}
+                  isAuthed={true}
+                />
+              )}
+            />
+            <Route
+              path="/update/property"
+              exact
+              render={props => (
+                <UpdateProperty
+                  user={this.state.firebaseUser}
+                  {...props}
+                  isAuthed={true}
+                />
+              )}
             />
             <Route
               path="/profile/rented"

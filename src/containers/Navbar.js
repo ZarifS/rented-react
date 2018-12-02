@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import ModalWrapper from "../components/ModalWrapper";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import axios from "axios";
 
 import firebase from "firebase";
 const config = require("../secret-keys/rented-project-key.json");
@@ -31,11 +32,21 @@ class NavBar extends Component {
   componentDidMount = () => {
     authorized.onAuthStateChanged(firebaseUser => {
       if (firebaseUser) {
-        console.log("firebaseUser: ", firebaseUser);
-        this.props.setUser(firebaseUser);
+        const uid = firebaseUser.uid;
+        const url = "http://localhost:8000/api/getUser/" + uid;
+        axios
+          .get(url)
+          .then(res => {
+            let userToSet = { ...res.data };
+            userToSet.uid = uid;
+            this.props.setUser(userToSet);
+          })
+          .catch(err => {
+            console.log("error in GET user call: ", err);
+          });
+        console.log("successfully logged in: ", firebaseUser);
       } else {
         console.log("not logged in");
-        this.props.setUser(null);
       }
     });
   };
@@ -54,6 +65,7 @@ class NavBar extends Component {
 
   handleLogoutClose = () => {
     authorized.signOut();
+    this.props.setUser(null);
     this.setState({ anchorEl: null });
   };
 
@@ -108,10 +120,10 @@ class NavBar extends Component {
             {!auth && (
               <div>
                 <ModalWrapper description="Login">
-                  <Login logIn={this.props.logIn} auth={authorized} />
+                  <Login setUser={this.props.setUser} auth={authorized} />
                 </ModalWrapper>
                 <ModalWrapper description="Sign up">
-                  <SignUp signUp={this.props.signUp} auth={authorized} />
+                  <SignUp setUser={this.props.setUser} auth={authorized} />
                 </ModalWrapper>
               </div>
             )}
