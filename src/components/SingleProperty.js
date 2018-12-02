@@ -7,13 +7,92 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+import { Button, IconButton } from "@material-ui/core";
 import red from "@material-ui/core/colors/red";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Bookmark } from "@material-ui/icons";
+import { Bookmark, HotelRounded, HotTubRounded } from "@material-ui/icons";
+import styled from "styled-components";
+import { Carousel } from "react-responsive-carousel";
+
+class SingleProperty extends React.Component {
+  state = { expanded: false };
+
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
+
+  createPictureUrls = () => {
+    let { picture_urls } = this.props.property;
+    let result = [];
+    for (let urlKey in picture_urls) {
+      result.push(
+        <div>
+          <img src={picture_urls[urlKey]} />
+        </div>
+      );
+    }
+    return result;
+  };
+
+  render() {
+    const { classes } = this.props;
+    const property = { ...this.props.property };
+    const avatarName = property.city.charAt(0).toUpperCase();
+    return (
+      <Card className={classes.card}>
+        <CardHeader
+          avatar={<Avatar className={classes.avatar}>{avatarName}</Avatar>}
+          action={
+            <IconButton
+              onClick={() => {
+                // TODO: Implement add to visitation List.
+                console.log("Add to visitation list");
+              }}
+            >
+              <Bookmark />
+            </IconButton>
+          }
+          title={property.title}
+          subheader={property.street_number + " " + property.street}
+        />
+        <Carousel>{this.createPictureUrls()}</Carousel>
+        <CardContent>
+          <ListingDetails>
+            <HorizontalWrapper>
+              <HotelRounded />
+              <DetailsText> Bedrooms: {property.bedrooms} </DetailsText>
+            </HorizontalWrapper>
+            <HorizontalWrapper>
+              <HotTubRounded />
+              <DetailsText> Bathrooms: {property.bathrooms} </DetailsText>
+            </HorizontalWrapper>
+            <HorizontalWrapper>
+              <HotTubRounded />
+              <DetailsText> Other Rooms: {property.otherRooms} </DetailsText>
+            </HorizontalWrapper>
+          </ListingDetails>
+        </CardContent>
+        <CardActions className={classes.actions} disableActionSpacing>
+          <Price>
+            {property.rent}
+            <Text>/Month</Text>
+          </Price>
+          <Button
+            className={classnames(classes.expand, {
+              [classes.expandOpen]: this.state.expanded
+            })}
+          >
+            Rent
+          </Button>
+        </CardActions>
+      </Card>
+    );
+  }
+}
+
+SingleProperty.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
 const styles = theme => ({
   card: {
@@ -27,14 +106,11 @@ const styles = theme => ({
     display: "flex"
   },
   expand: {
-    transform: "rotate(0deg)",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest
-    }),
     marginLeft: "auto",
     [theme.breakpoints.up("sm")]: {
       marginRight: -8
-    }
+    },
+    border: "1px lightgrey solid"
   },
   expandOpen: {
     transform: "rotate(180deg)"
@@ -44,81 +120,42 @@ const styles = theme => ({
   }
 });
 
-class SingleProperty extends React.Component {
-  state = { expanded: false };
+const ListingDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const DetailsText = styled.span`
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-top: 8px;
+  margin-left: 10px;
+  font-size: 11px;
+`;
+const HorizontalWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin: 5px 0;
+`;
 
-  handleExpandClick = () => {
-    this.setState(state => ({ expanded: !state.expanded }));
-  };
+const RentButton = styled.button`
+  margin-top: 30px;
+  height: 40px;
+  width: 510px;
+  border-radius: 5px;
+  background-color: #ff5a5f;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+`;
 
-  render() {
-    const { classes } = this.props;
-    const property = { ...this.props.property };
-    const { address, owner } = { ...this.props.property };
-    const { profileURL, name } = { ...owner };
-    return (
-      <Card className={classes.card}>
-        <CardHeader
-          avatar={
-            <Avatar src={profileURL} alt={name} className={classes.avatar} />
-          }
-          action={
-            <IconButton
-              onClick={() => {
-                // TODO: Implement add to visitation List.
-                console.log("Add to visitation list");
-              }}
-            >
-              <Bookmark />
-            </IconButton>
-          }
-          title={property.name}
-          subheader={address.streetNumber + " " + address.street}
-        />
-        <CardMedia
-          className={classes.media}
-          image="https://images.unsplash.com/photo-1515263487990-61b07816b324?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c02fb96f9cfc16d3649835b75d1b2033&auto=format&fit=crop&w=1350&q=80"
-          title="Paella dish"
-        />
-        <CardContent>
-          <Typography component="p">
-            <i className="fas fa-bed fa-lg" />
-            <span style={{ fontSize: "16px" }}>
-              {"  " + property.numBedrooms + "  "}
-            </span>
-          </Typography>
-          <Typography>
-            <i className="fas fa-bath fa-lg" />
-            <span style={{ fontSize: "16px" }}>
-              {"    " + property.numBedrooms + "  "}
-            </span>
-          </Typography>
-        </CardContent>
-        <CardActions className={classes.actions} disableActionSpacing>
-          <Typography>${property.rentMonthly}</Typography>
-          <IconButton
-            className={classnames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded
-            })}
-            onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
-            aria-label="Show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>{property.description}</Typography>
-          </CardContent>
-        </Collapse>
-      </Card>
-    );
-  }
-}
+const Text = styled.span`
+  font-size: 12px;
+`;
 
-SingleProperty.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+const Price = styled.span`
+  z-index: 100;
+  font-weight: 600;
+  font-size: 30px;
+`;
 
 export default withStyles(styles)(SingleProperty);
