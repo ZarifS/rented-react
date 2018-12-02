@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropertiesList from "../containers/PropertiesList";
 import BrowseProperties from "./BrowseProperties";
+import ViewProperty from "./ViewProperty";
 
 const properties = [
   {
@@ -73,7 +74,7 @@ class Home extends Component {
     ];
     return (
       <div className="container">
-        <BrowseProperties/>
+        <ViewProperty/>
       </div>
     );
   };
