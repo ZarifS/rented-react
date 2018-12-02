@@ -105,7 +105,7 @@ class UpdateProperty extends Component{
         super(props);
         this.imageInput=React.createRef();
         this.property = {
-            name: "Cozy Apartment in Orleans",
+            title: "Cozy Apartment in Orleans",
             imageUrl:
               "https://images.unsplash.com/photo-1515263487990-61b07816b324?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c02fb96f9cfc16d3649835b75d1b2033&auto=format&fit=crop&w=1350&q=80",
             type: 'Apartment',
@@ -137,7 +137,7 @@ class UpdateProperty extends Component{
             rent:this.property.rent,
             image: [],
             allImages:[],
-            imageURLS:[],//property.main,property.pic2,property.pic3,property.pic4,property.pic5
+            imageURLS:[this.property.imageUrl],//property.main,property.pic2,property.pic3,property.pic4,property.pic5
             errMessage:"",
             available:this.property.available
         };
@@ -275,7 +275,7 @@ class UpdateProperty extends Component{
                     {
                         this.state.imageURLS.map( 
                             i=>{ 
-                                 return <ImgRow key={i.toString()}> 
+                                 return <ImgRow key={i}> 
                                      <Image src={i} alt="not available"/> 
                                 </ImgRow>
                             }

@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import axios from 'axios';
 const Label=styled.label`
     padding: .5em 1em .5em 0;
     flex: 1;
@@ -193,7 +194,34 @@ class CreateProperty extends Component{
     handleSubmit(e){
         var valid=this.validateInput();
         if(valid){
-
+            let user=this.props.user;
+            const property1={
+                owner_uid:30,
+                title: this.state.title,
+                street: this.state.street,
+                street_number: this.state.streetNumber,
+                city: this.state.city,
+                province: this.state.province,
+                country: this.state.country,
+                postal_code: this.postalCode,
+                bathrooms: parseInt(this.state.numBathrooms),
+                bedrooms: parseInt(this.state.numBedrooms),
+                type: this.state.type,
+                available: this.state.available,
+                picture_urls:{
+                    main: "",
+                    pic2:"",
+                    pic3:"",
+                    pic4:"",
+                    pic5:"",
+                }
+            }
+            console.log(property1);
+            axios.post('http://localhost:8000/api/addListing',property1).then(res=>{
+                console.log(res);
+                console.log(res.data);
+            });
+            
         }
 
         e.preventDefault();
