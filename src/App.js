@@ -7,6 +7,7 @@ import PropertiesList from "./containers/PropertiesList";
 import axios from "axios";
 import ViewProperty from "./containers/ViewProperty";
 import CreateProperty from "./containers/CreateProperty";
+import UpdateProperty from "./containers/UpdateProperty";
 
 class App extends Component {
   constructor(props) {
@@ -73,6 +74,17 @@ class App extends Component {
               exact
               render={props => (
                 <CreateProperty
+                  user={this.state.firebaseUser}
+                  {...props}
+                  isAuthed={true}
+                />
+              )}
+            />
+            <Route
+              path="/update/property"
+              exact
+              render={props => (
+                <UpdateProperty
                   user={this.state.firebaseUser}
                   {...props}
                   isAuthed={true}
