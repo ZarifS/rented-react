@@ -54,7 +54,7 @@ class BrowseProperties extends Component {
     }
 
     this.typeCallBack = (dataFromChild) => {
-      this.setState({typeFtiler: dataFromChild})
+      this.setState({typeFilter: dataFromChild})
     }
 
     this.minRentCallBack = (dataFromChild) => {
