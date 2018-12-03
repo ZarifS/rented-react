@@ -13,6 +13,7 @@ import red from "@material-ui/core/colors/red";
 import { Bookmark, HotelRounded, HotTubRounded } from "@material-ui/icons";
 import styled from "styled-components";
 import { Carousel } from "react-responsive-carousel";
+import axios from "axios";
 
 class SingleProperty extends React.Component {
   state = { expanded: false };
@@ -46,7 +47,19 @@ class SingleProperty extends React.Component {
             <IconButton
               onClick={() => {
                 // TODO: Implement add to visitation List.
-                console.log("Add to visitation list");
+                const toAdd = {
+                  listing_id: property.listing_id,
+                  date: new Date().toString(),
+                  user_id: this.props.user.uid
+                };
+                axios
+                  .post("http://localhost:8000/api/addToVisitingList", toAdd)
+                  .then(res => {
+                    console.log("res: ", res);
+                  })
+                  .catch(e => {
+                    console.log("error: ", e);
+                  });
               }}
             >
               <Bookmark />
@@ -96,7 +109,7 @@ SingleProperty.propTypes = {
 
 const styles = theme => ({
   card: {
-    marginBottom: "20px",
+    marginBottom: "20px"
   },
   media: {
     height: 0,

@@ -24,7 +24,10 @@ class Home extends Component {
   render = () => {
     return (
       <div className="container">
-        <BrowseProperties properties={this.state.properties}/>
+        <BrowseProperties
+          user={this.props.user}
+          properties={this.state.properties}
+        />
       </div>
     );
   };

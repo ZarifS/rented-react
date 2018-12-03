@@ -116,7 +116,7 @@ class BrowseProperties extends Component {
           </Grid>
           {filteredproperties.map((property, index) => (
             <Grid key={index} item xs={6}>
-              <SingleProperty property={property} />
+              <SingleProperty user={this.props.user} property={property} />
             </Grid>
           ))}
         </Grid>
