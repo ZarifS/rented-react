@@ -30,6 +30,10 @@ class BrowseProperties extends Component {
       searchValue: "",
       bathRoomFilter: 0,
       bedRoomFilter: 0,
+      locationFilter: "",
+      typeFilter: "",
+      minRentFilter: 0,
+      maxRentFilter: 10000000,
     };
 
 
@@ -45,6 +49,22 @@ class BrowseProperties extends Component {
       this.setState({bedRoomFilter: dataFromChild})
     }
 
+    this.locationCallBack = (dataFromChild) => {
+      this.setState({locationFilter: dataFromChild})
+    }
+
+    this.typeCallBack = (dataFromChild) => {
+      this.setState({typeFtiler: dataFromChild})
+    }
+
+    this.minRentCallBack = (dataFromChild) => {
+      this.setState({minRentFilter: dataFromChild})
+    }
+
+    this.maxRentCallBack = (dataFromChild) => {
+      this.setState({maxRentFilter: dataFromChild})
+    }
+
 
   }
 
@@ -56,21 +76,25 @@ class BrowseProperties extends Component {
       return(<div/>)
     }
 
-  
-
-  
     let filterByName = this.props.properties.filter(property => property.title.toLowerCase().includes(this.state.searchValue.toLowerCase()));
     if(this.state.searchValue == "" || this.state.searchValue.length < 1){
       filterByName = this.props.properties;
     }
     let filterByBedroom = filterByName.filter(property => property.bedrooms >= parseInt(this.state.bedRoomFilter));
-    let filteredproperties = filterByBedroom.filter(property => property.bathrooms >= parseInt(this.state.bathRoomFilter));
+    let filterByBathroom = filterByBedroom.filter(property => property.bathrooms >= parseInt(this.state.bathRoomFilter));
+    let filterByMinRent = filterByBathroom.filter(property => property.rent >= parseInt(this.state.minRentFilter));
+    let filterByMaxRent = filterByMinRent.filter(property => property.rent <= parseInt(this.state.maxRentFilter));
+    let filterByLocation = filterByMaxRent.filter(property => property.city.toLowerCase().includes(this.state.locationFilter));
+    let filteredproperties = filterByLocation.filter(property => property.type.toLowerCase().includes(this.state.typeFilter));
+    
 
     return (
       <div className={classes.root}>
       <Grid container spacing={24}>
             <Grid item xs={12}>
-                <Search callbackSV={this.searchValueCallBack} callbackBed={this.bedRoomCallBack} callbackBath={this.bathRoomCallBack}/>
+                <Search callbackSV={this.searchValueCallBack} callbackBed={this.bedRoomCallBack} callbackBath={this.bathRoomCallBack} 
+                callbackLocation={this.locationCallBack} callbackType={this.typeCallBack} 
+                callbackMinRent={this.minRentCallBack} callbackMaxRent={this.maxRentCallBack}/>
             </Grid>
             <Grid item xs={12}>
             <h3>Browse </h3>

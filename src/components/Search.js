@@ -31,12 +31,14 @@ const CustomSelect = styled(Select)`
 
 
 const typeOptions = [
+  { value: '', label: 'All' },
   { value: 'apartment', label: 'Apartment' },
   { value: 'condo', label: 'Condo' },
   { value: 'house', label: 'House' },
 ]
 
 const locationOptions = [
+  { value: '', label: 'All' },
   { value: 'ottawa', label: 'Ottawa' },
   { value: 'gatineau', label: 'Gatineau' },
   { value: 'toronto', label: 'Toronto' },
@@ -53,27 +55,47 @@ const locationOptions = [
     }
 
     handleBedrooms = (e) => {
-      this.props.callbackBed(e.target.value);
+      if(e.target.value == ""){
+        this.props.callbackBed(0);
+      }
+      else{
+        this.props.callbackBed(e.target.value);
+      }
     }
 
     handleBathrooms = (e) => {
-      this.props.callbackBath(e.target.value);
+      if(e.target.value == ""){
+        this.props.callbackBath(0);
+      }
+      else{
+        this.props.callbackBath(e.target.value);
+      }
     }
 
     handleLocation = (e) => {
-
+      this.props.callbackLocation(e.value);
     }
     
     handleType = (e) => {
-
+      this.props.callbackType(e.value);
     }
 
     handleMinRent = (e) => {
-
+      if(e.target.value == ""){
+        this.props.callbackMinRent(0);
+      }
+      else{
+        this.props.callbackMinRent(e.target.value);
+      }
     }
 
     handleMaxRent = (e) => {
-
+      if(e.target.value == ""){
+        this.props.callbackMaxRent(0);
+      }
+      else{
+        this.props.callbackMaxRent(e.target.value);
+      }
     }
 
     render() {
@@ -92,10 +114,10 @@ const locationOptions = [
           <FilterByText>Filter By: </FilterByText>
           <Input type="number" name="bedrooms" placeholder="Bedrooms" onChange={this.handleBedrooms}></Input>
           <Input type="number" name="bathrooms" placeholder="Bathrooms" onChange={this.handleBathrooms}></Input>
-          <CustomSelect placeholder={"Location"} options={locationOptions}/>
-          <CustomSelect placeholder={"Type"} options={typeOptions}/>
-          <Input type="number" name="max rent" placeholder="Max Rent"></Input>
-          <Input type="number" name="min rent" placeholder="Min Rent"></Input>
+          <CustomSelect placeholder={"Location"} options={locationOptions} onChange={this.handleLocation}/>
+          <CustomSelect placeholder={"Type"} options={typeOptions} onChange={this.handleType}/>
+          <Input type="number" name="min rent" placeholder="Min Rent" onChange={this.handleMinRent}></Input>
+          <Input type="number" name="max rent" placeholder="Max Rent" onChange={this.handleMaxRent}></Input>
         </HorizontalWrapper>
         </MuiThemeProvider>
       </div>
