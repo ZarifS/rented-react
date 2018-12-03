@@ -39,23 +39,25 @@ class BrowseProperties extends Component {
 
     this.state = {
       properties: [],
-      isSearchResultsVisible: false,
-      searchValue: ""
+      searchValue: "",
+      bathRoomFilter: 0,
+      bedRoomFilter: 0,
     };
 
-    this.searchResultsCallback = (dataFromChild) => {
-        this.setState({isSearchResultsVisible: dataFromChild})
-    }
 
-    this.searchBarCallback = (dataFromChild) => {
-        this.setState({isSearchResultsVisible: true})
+    this.searchValueCallBack = (dataFromChild) => {
         this.setState({searchValue: dataFromChild});
     }
 
-    this.exploreCallback = () => {
-      this.setState({isSearchResultsVisible: true})
-      this.setState({searchValue: 'All Properties'})
+    this.bathRoomCallBack = (dataFromChild) => {
+      this.setState({bathRoomFilter: dataFromChild})
     }
+
+    this.bedRoomCallBack = (dataFromChild) => {
+      this.setState({bedRoomFilter: dataFromChild})
+    }
+
+
   }
 
   render() {
@@ -69,18 +71,18 @@ class BrowseProperties extends Component {
   
 
   
-    let filteredproperties = this.props.properties.filter(property => property.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
-
-    console.log(filteredproperties);
-
+    let filterByName = this.props.properties.filter(property => property.title.toLowerCase().includes(this.state.searchValue.toLowerCase()));
     if(this.state.searchValue == "" || this.state.searchValue.length < 1){
-      filteredproperties = this.props.properties;
+      filterByName = this.props.properties;
     }
+    let filterByBedroom = filterByName.filter(property => property.bedrooms >= parseInt(this.state.bedRoomFilter));
+    let filteredproperties = filterByBedroom.filter(property => property.bathrooms >= parseInt(this.state.bathRoomFilter));
+
     return (
       <div className={classes.root}>
       <Grid container spacing={24}>
             <Grid item xs={12}>
-                <Search callbackFromParent={this.searchBarCallback}/>
+                <Search callbackSV={this.searchValueCallBack} callbackBed={this.bedRoomCallBack} callbackBath={this.bathRoomCallBack}/>
             </Grid>
             <Grid item xs={12}>
             <h3>Browse </h3>

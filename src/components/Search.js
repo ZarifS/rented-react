@@ -13,7 +13,15 @@ import AutoComplete from 'material-ui/AutoComplete';
     }
 
     handleChange = (e) => {
-      this.props.callbackFromParent(e);
+      this.props.callbackSV(e);
+    }
+
+    handleBedrooms = (e) => {
+      this.props.callbackBed(e.target.value);
+    }
+
+    handleBathrooms = (e) => {
+      this.props.callbackBath(e.target.value);
     }
 
     render() {
@@ -28,6 +36,8 @@ import AutoComplete from 'material-ui/AutoComplete';
           }}
           hintText={"Search for a Property"}
         />
+        <input type="number" name="bedrooms" placeholder="bedrooms" onChange={this.handleBedrooms}></input>
+        <input type="number" name="bathrooms" placeholder="bathrooms" onChange={this.handleBathrooms}></input>
         </MuiThemeProvider>
       </div>
       );
