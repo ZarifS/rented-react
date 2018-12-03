@@ -19,6 +19,10 @@ class App extends Component {
     };
   }
 
+  setProperties = val => {
+    this.setState({ ownedProperties: val });
+  };
+
   setUser = val => {
     this.setState({ firebaseUser: val }, () => {
       if (this.state.firebaseUser) {
@@ -78,6 +82,7 @@ class App extends Component {
               render={props => (
                 <CreateProperty
                   user={this.state.firebaseUser}
+                  setProperties={this.setProperties}
                   {...props}
                   isAuthed={true}
                 />

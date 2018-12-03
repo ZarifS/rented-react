@@ -11,13 +11,11 @@ import Checkbox from "@material-ui/core/Checkbox";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
 
-
 const Row = styled.li`
   display: flex;
   justify-content: flex-end;
   padding: 0.5em;
 `;
-
 
 const styles = theme => ({
   container: {
@@ -83,11 +81,11 @@ class CreateProperty extends Component {
       numBathrooms: 0,
       numOtherRooms: 0,
       rent: 0,
-      pic1:"",
-      pic2:"",
-      pic3:"",
-      pic4:"",
-      pic5:"",
+      pic1: "",
+      pic2: "",
+      pic3: "",
+      pic4: "",
+      pic5: "",
       errMessage: "",
       available: false,
       open: false
@@ -98,53 +96,53 @@ class CreateProperty extends Component {
     this.handleCheck = this.handleCheck.bind(this);
   }
 
-//   fileUpload = () => {
-//     const currImages = this.state.allImages;
-//     for (var i = 0; i < this.state.image.length; i++) {
-//       var fd = new FormData();
-//       fd.append(
-//         "image" + i.toString(),
-//         this.state.image[i],
-//         this.state.image[i].name
-//       );
-//       currImages.push(fd);
-//     }
+  //   fileUpload = () => {
+  //     const currImages = this.state.allImages;
+  //     for (var i = 0; i < this.state.image.length; i++) {
+  //       var fd = new FormData();
+  //       fd.append(
+  //         "image" + i.toString(),
+  //         this.state.image[i],
+  //         this.state.image[i].name
+  //       );
+  //       currImages.push(fd);
+  //     }
 
-//     this.setState({ allImages: currImages });
-//   };
-//   fileHandler(e) {
-//     let allfiles = e.target.files;
-//     let files = [];
-//     let urls = [];
+  //     this.setState({ allImages: currImages });
+  //   };
+  //   fileHandler(e) {
+  //     let allfiles = e.target.files;
+  //     let files = [];
+  //     let urls = [];
 
-//     for (var i = 0; i < allfiles.length; i++) {
-//       files[i] = allfiles.item(i);
-//     }
-//     files = files.filter(image => image.name.match(/\.(jpg|jpeg|png)$/));
-//     let message = "";
-//     if (files.length > 5) {
-//       message = "You are only allowed to upload 5 images ";
-//     }
-//     for (var j = 0; j < files.length; j++) {
-//       let reader = new FileReader();
-//       if (files[j].size > 5000000) {
-//         message = "File size exceeded 5 mb";
-//         break;
-//       }
-//       reader.readAsDataURL(files[j]);
-//       reader.onload = () => {
-//         urls.push(reader.result);
-//         this.setState({
-//           imageURLS: urls
-//         });
-//       };
-//     }
+  //     for (var i = 0; i < allfiles.length; i++) {
+  //       files[i] = allfiles.item(i);
+  //     }
+  //     files = files.filter(image => image.name.match(/\.(jpg|jpeg|png)$/));
+  //     let message = "";
+  //     if (files.length > 5) {
+  //       message = "You are only allowed to upload 5 images ";
+  //     }
+  //     for (var j = 0; j < files.length; j++) {
+  //       let reader = new FileReader();
+  //       if (files[j].size > 5000000) {
+  //         message = "File size exceeded 5 mb";
+  //         break;
+  //       }
+  //       reader.readAsDataURL(files[j]);
+  //       reader.onload = () => {
+  //         urls.push(reader.result);
+  //         this.setState({
+  //           imageURLS: urls
+  //         });
+  //       };
+  //     }
 
-//     this.setState({
-//       image: files,
-//       errMessage: message
-//     });
-//   }
+  //     this.setState({
+  //       image: files,
+  //       errMessage: message
+  //     });
+  //   }
   handleCheck() {
     this.setState({
       available: !this.state.available
@@ -186,6 +184,7 @@ class CreateProperty extends Component {
           bathrooms: parseInt(this.state.numBathrooms),
           bedrooms: parseInt(this.state.numBedrooms),
           otherRooms: parseInt(this.state.numOtherRooms),
+          rent: parseInt(this.state.rent),
           type: this.state.type,
           available: this.state.available,
           picture_urls: {
@@ -202,6 +201,15 @@ class CreateProperty extends Component {
           .then(res => {
             console.log(res);
             console.log(res.data);
+            axios
+              .get("http://localhost:8000/api/getListings/" + user.uid)
+              .then(res => {
+                let data = res.data;
+                this.props.setProperties(data);
+              })
+              .catch(e => {
+                console.log("error: ", e.message);
+              });
           })
           .catch(err => {
             console.log("error in post property call", err);
@@ -214,7 +222,7 @@ class CreateProperty extends Component {
           errMessage: "Successfully added Property",
           open: true
         });
-      }else{
+      } else {
         console.log("Not Logged in");
         this.setState({ errMessage: "Not logged in", open: true });
       }
@@ -413,51 +421,51 @@ class CreateProperty extends Component {
           }
           label="Available"
         />
-         <TextField
-            name="pic1"
-            label="Picture 1 Link"
-            className={classes.textField}
-            value={this.state.pic1}
-            onChange={this.handleInputChange}
-            margin="normal"
-            variant="outlined"
-          />
-           <TextField
-            name="pic2"
-            label="Picture 2 Link"
-            className={classes.textField}
-            value={this.state.pic2}
-            onChange={this.handleInputChange}
-            margin="normal"
-            variant="outlined"
-          />
-           <TextField
-            name="pic3"
-            label="Picture 3 Link"
-            className={classes.textField}
-            value={this.state.pic3}
-            onChange={this.handleInputChange}
-            margin="normal"
-            variant="outlined"
-          />
-           <TextField
-            name="pic4"
-            label="Picture 4 Link"
-            className={classes.textField}
-            value={this.state.pic4}
-            onChange={this.handleInputChange}
-            margin="normal"
-            variant="outlined"
-          />
-           <TextField
-            name="pic5"
-            label="Picture 5 Link"
-            className={classes.textField}
-            value={this.state.pic5}
-            onChange={this.handleInputChange}
-            margin="normal"
-            variant="outlined"
-          />
+        <TextField
+          name="pic1"
+          label="Picture 1 Link"
+          className={classes.textField}
+          value={this.state.pic1}
+          onChange={this.handleInputChange}
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          name="pic2"
+          label="Picture 2 Link"
+          className={classes.textField}
+          value={this.state.pic2}
+          onChange={this.handleInputChange}
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          name="pic3"
+          label="Picture 3 Link"
+          className={classes.textField}
+          value={this.state.pic3}
+          onChange={this.handleInputChange}
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          name="pic4"
+          label="Picture 4 Link"
+          className={classes.textField}
+          value={this.state.pic4}
+          onChange={this.handleInputChange}
+          margin="normal"
+          variant="outlined"
+        />
+        <TextField
+          name="pic5"
+          label="Picture 5 Link"
+          className={classes.textField}
+          value={this.state.pic5}
+          onChange={this.handleInputChange}
+          margin="normal"
+          variant="outlined"
+        />
         <Row>
           <Button
             className={classes.button}
