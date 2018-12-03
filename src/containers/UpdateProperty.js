@@ -383,7 +383,7 @@ class UpdateProperty extends Component{
             variant="outlined"
           />
                 <Row>
-                <Button className={classes.button} disabled={this.state.disabledUpdate} variant="contained" color="primary" onClick={this.handleSubmit}  >Add Property</Button>
+                <Button className={classes.button} disabled={this.state.disabledUpdate} variant="contained" color="primary" onClick={this.handleSubmit}  >Update Property</Button>
                 </Row>
                 <Snackbar
                     anchorOrigin={{
