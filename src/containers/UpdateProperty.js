@@ -111,7 +111,6 @@ const types=[
 class UpdateProperty extends Component{
     constructor(props){
         super(props);
-        this.imageInput=React.createRef();
         this.state={
             owner_uid:"",
             type: "Apartment",
@@ -249,7 +248,7 @@ class UpdateProperty extends Component{
       };
     handleSubmit(e){
         var valid=this.validateInput();
-        const url='http://localhost:8000/api/updateListing'+this.props.listing_id;
+        const url='http://localhost:8000/api/updateListing/'+this.props.listing_id;
         if(valid){
             let user=this.props.user;
             if(user && user.uid===this.state.owner_uid){
@@ -261,11 +260,11 @@ class UpdateProperty extends Component{
                     type: this.state.type,
                     available: this.state.available,
                     picture_urls:{
-                        main:"",
-                        pic2:"",
-                        pic3:"",
-                        pic4:"",
-                        pic5:"",
+                        main: this.state.pic1,
+                        pic2: this.state.pic2,
+                        pic3: this.state.pic3,
+                        pic4: this.state.pic4,
+                        pic5: this.state.pic5
                     }
                 }
                 console.log(property1);

@@ -67,7 +67,6 @@ const types = [
 class CreateProperty extends Component {
   constructor(props) {
     super(props);
-    this.imageInput = React.createRef();
     this.state = {
       type: "Apartment",
       title: "",
