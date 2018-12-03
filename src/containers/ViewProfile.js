@@ -103,7 +103,7 @@ class ViewProfile extends Component {
         <Input
           type="text"
           name="street_number"
-          placeholder={"Email Address: " + (user ? user.street_number : "")}
+          placeholder={"Street Number: " + (user ? user.street_number : "")}
           defaultChecked={this.state.street_number}
           onChange={this.handleChange}
         />
