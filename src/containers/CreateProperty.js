@@ -10,56 +10,15 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
-const Label = styled.label`
-  padding: 0.5em 1em 0.5em 0;
-  flex: 1;
-`;
-// const Label1=styled.label`
-//     padding: .5em 1em .5em 0;
-//     flex: 2;
-//     display:block;
-// `;
-// const Select=styled.select`
-//     flex: 2;
-// `;
-const Input = styled.input`
-  flex: 2;
-`;
-// const Input1=styled.input`
-//     width:15px;
-//     height:15px;
-//     padding:0;
-//     margin:0;
-//     position:relative;
-// `;
-// const Wrap=styled.ul`
-//     background-color:whitesmoke;
-//     list-style-type: none;
-//     padding: 0;
-//     border-radius: 2px;
-// `;
+
+
 const Row = styled.li`
   display: flex;
   justify-content: flex-end;
   padding: 0.5em;
 `;
-const ImgRow = styled.li`
-  display: inline;
-  padding: 0.5em;
-`;
-// const Button=styled.button`
-//     padding: .5em;
-//     border: 0;
 
-// `;
-// const Form=styled.form`
-//     display: auto;
 
-// `;
-const Image = styled.img`
-    width: 500px;
-    height: 500px:
-`;
 const styles = theme => ({
   container: {
     display: "flex",
@@ -124,9 +83,11 @@ class CreateProperty extends Component {
       numBathrooms: 0,
       numOtherRooms: 0,
       rent: 0,
-      image: [],
-      allImages: [],
-      imageURLS: [],
+      pic1:"",
+      pic2:"",
+      pic3:"",
+      pic4:"",
+      pic5:"",
       errMessage: "",
       available: false,
       open: false
@@ -134,58 +95,56 @@ class CreateProperty extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.fileHandler = this.fileHandler.bind(this);
-    this.fileUpload = this.fileUpload.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
   }
 
-  fileUpload = () => {
-    const currImages = this.state.allImages;
-    for (var i = 0; i < this.state.image.length; i++) {
-      var fd = new FormData();
-      fd.append(
-        "image" + i.toString(),
-        this.state.image[i],
-        this.state.image[i].name
-      );
-      currImages.push(fd);
-    }
+//   fileUpload = () => {
+//     const currImages = this.state.allImages;
+//     for (var i = 0; i < this.state.image.length; i++) {
+//       var fd = new FormData();
+//       fd.append(
+//         "image" + i.toString(),
+//         this.state.image[i],
+//         this.state.image[i].name
+//       );
+//       currImages.push(fd);
+//     }
 
-    this.setState({ allImages: currImages });
-  };
-  fileHandler(e) {
-    let allfiles = e.target.files;
-    let files = [];
-    let urls = [];
+//     this.setState({ allImages: currImages });
+//   };
+//   fileHandler(e) {
+//     let allfiles = e.target.files;
+//     let files = [];
+//     let urls = [];
 
-    for (var i = 0; i < allfiles.length; i++) {
-      files[i] = allfiles.item(i);
-    }
-    files = files.filter(image => image.name.match(/\.(jpg|jpeg|png)$/));
-    let message = "";
-    if (files.length > 5) {
-      message = "You are only allowed to upload 5 images ";
-    }
-    for (var j = 0; j < files.length; j++) {
-      let reader = new FileReader();
-      if (files[j].size > 5000000) {
-        message = "File size exceeded 5 mb";
-        break;
-      }
-      reader.readAsDataURL(files[j]);
-      reader.onload = () => {
-        urls.push(reader.result);
-        this.setState({
-          imageURLS: urls
-        });
-      };
-    }
+//     for (var i = 0; i < allfiles.length; i++) {
+//       files[i] = allfiles.item(i);
+//     }
+//     files = files.filter(image => image.name.match(/\.(jpg|jpeg|png)$/));
+//     let message = "";
+//     if (files.length > 5) {
+//       message = "You are only allowed to upload 5 images ";
+//     }
+//     for (var j = 0; j < files.length; j++) {
+//       let reader = new FileReader();
+//       if (files[j].size > 5000000) {
+//         message = "File size exceeded 5 mb";
+//         break;
+//       }
+//       reader.readAsDataURL(files[j]);
+//       reader.onload = () => {
+//         urls.push(reader.result);
+//         this.setState({
+//           imageURLS: urls
+//         });
+//       };
+//     }
 
-    this.setState({
-      image: files,
-      errMessage: message
-    });
-  }
+//     this.setState({
+//       image: files,
+//       errMessage: message
+//     });
+//   }
   handleCheck() {
     this.setState({
       available: !this.state.available
@@ -230,11 +189,11 @@ class CreateProperty extends Component {
           type: this.state.type,
           available: this.state.available,
           picture_urls: {
-            main: "",
-            pic2: "",
-            pic3: "",
-            pic4: "",
-            pic5: ""
+            main: this.state.pic1,
+            pic2: this.state.pic2,
+            pic3: this.state.pic3,
+            pic4: this.state.pic4,
+            pic5: this.state.pic5
           }
         };
         console.log(property1);
@@ -255,6 +214,9 @@ class CreateProperty extends Component {
           errMessage: "Successfully added Property",
           open: true
         });
+      }else{
+        console.log("Not Logged in");
+        this.setState({ errMessage: "Not logged in", open: true });
       }
     } else {
       console.log("Not all fields were filled");
@@ -284,7 +246,7 @@ class CreateProperty extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <form className={classes.container}>
+      <div className={classes.container}>
         <TextField
           error={this.state.title === ""}
           helperText={this.state.title === "" ? "Required!" : " "}
@@ -451,40 +413,51 @@ class CreateProperty extends Component {
           }
           label="Available"
         />
-        <div className={classes.container1}>
-          <label className={classes.textField}>Upload Images:</label>
-          <input
-            accept="image/*"
-            className={classes.input}
-            id="uploadImage"
-            type="file"
-            ref={this.imageInput}
-            multiple
-            onChange={this.fileHandler}
+         <TextField
+            name="pic1"
+            label="Picture 1 Link"
+            className={classes.textField}
+            value={this.state.pic1}
+            onChange={this.handleInputChange}
+            margin="normal"
+            variant="outlined"
           />
-          <label htmlFor="uploadImage">
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-              component="span"
-              onClick={this.fileUpload}
-            >
-              Choose Images to Upload
-            </Button>
-          </label>
-        </div>
-        <br />
-        <ul>
-          {this.state.imageURLS.map(i => {
-            return (
-              <ImgRow key={i.toString()}>
-                <Image src={i} alt="not available" />
-              </ImgRow>
-            );
-          })}
-        </ul>
-        <br />
+           <TextField
+            name="pic2"
+            label="Picture 2 Link"
+            className={classes.textField}
+            value={this.state.pic2}
+            onChange={this.handleInputChange}
+            margin="normal"
+            variant="outlined"
+          />
+           <TextField
+            name="pic3"
+            label="Picture 3 Link"
+            className={classes.textField}
+            value={this.state.pic3}
+            onChange={this.handleInputChange}
+            margin="normal"
+            variant="outlined"
+          />
+           <TextField
+            name="pic4"
+            label="Picture 4 Link"
+            className={classes.textField}
+            value={this.state.pic4}
+            onChange={this.handleInputChange}
+            margin="normal"
+            variant="outlined"
+          />
+           <TextField
+            name="pic5"
+            label="Picture 5 Link"
+            className={classes.textField}
+            value={this.state.pic5}
+            onChange={this.handleInputChange}
+            margin="normal"
+            variant="outlined"
+          />
         <Row>
           <Button
             className={classes.button}
@@ -511,7 +484,7 @@ class CreateProperty extends Component {
           }
           className={classes.snackbar}
         />
-      </form>
+      </div>
     );
   }
 }
