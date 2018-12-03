@@ -14,9 +14,15 @@ import { Bookmark, HotelRounded, HotTubRounded } from "@material-ui/icons";
 import styled from "styled-components";
 import { Carousel } from "react-responsive-carousel";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 class SingleProperty extends React.Component {
-  state = { expanded: false };
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: false
+    };
+  }
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -38,6 +44,7 @@ class SingleProperty extends React.Component {
   render() {
     const { classes } = this.props;
     const property = { ...this.props.property };
+    const user = { ...this.props.user };
     const avatarName = property.city.charAt(0).toUpperCase();
     return (
       <Card className={classes.card}>
@@ -90,13 +97,51 @@ class SingleProperty extends React.Component {
             {property.rent}
             <Text>/Month</Text>
           </Price>
-          <Button
-            className={classnames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded
-            })}
-          >
-            Rent
-          </Button>
+          {!this.props.owned && (
+            <Button
+              className={classnames(classes.expand, {
+                [classes.expandOpen]: this.state.expanded
+              })}
+            >
+              Rent
+            </Button>
+          )}
+          {this.props.owned && (
+            <div>
+              <Button
+                className={classnames(classes.expand, {
+                  [classes.expandOpen]: this.state.expanded
+                })}
+                onClick={() => {
+                  console.log("button edit clicked");
+                }}
+              >
+                <Link to={"/update/property/" + property.listing_id}>Edit</Link>
+              </Button>
+              <Button
+                className={classnames(classes.expand, {
+                  [classes.expandOpen]: this.state.expanded
+                })}
+                onClick={() => {
+                  console.log("button delete clicked");
+                  let { listing_id } = property;
+                  axios
+                    .delete(
+                      "http://localhost:8000/api/deleteListing/" + listing_id
+                    )
+                    .then(res => {
+                      console.log(res, res.data);
+                      window.location = "http://localhost:3000/";
+                    })
+                    .catch(e => {
+                      console.log("e: ", e);
+                    });
+                }}
+              >
+                Delete
+              </Button>
+            </div>
+          )}
         </CardActions>
       </Card>
     );
@@ -120,9 +165,6 @@ const styles = theme => ({
   },
   expand: {
     marginLeft: "auto",
-    [theme.breakpoints.up("sm")]: {
-      marginRight: -8
-    },
     border: "1px lightgrey solid"
   },
   expandOpen: {

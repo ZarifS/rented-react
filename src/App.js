@@ -67,6 +67,7 @@ class App extends Component {
                 <PropertiesList
                   {...props}
                   user={this.state.firebaseUser}
+                  owned
                   isAuthed={true}
                   properties={this.state.ownedProperties}
                 />
@@ -90,8 +91,7 @@ class App extends Component {
               )}
             />
             <Route
-              path="/update/property"
-              exact
+              path="/update/property/:listing_id"
               render={props => (
                 <UpdateProperty
                   user={this.state.firebaseUser}

@@ -12,7 +12,13 @@ class PropertiesList extends Component {
     if (this.props.properties) {
       let jsxProperties = [];
       this.props.properties.forEach((property, index) => {
-        jsxProperties.push(<SingleProperty key={index} property={property} />);
+        jsxProperties.push(
+          <SingleProperty
+            owned={this.props.owned}
+            key={index}
+            property={property}
+          />
+        );
       });
       return jsxProperties;
     } else {
