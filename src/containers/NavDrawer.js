@@ -50,19 +50,14 @@ const userNavigationPaths = [
     icon: <Home />
   },
   {
-    name: "Owner Statistics",
-    url: "/profile/ownerStatistics",
-    icon: <Assessment />
-  },
-  {
     name: "Visitation List",
     url: "/profile/visitList",
     icon: <Bookmark />
   },
   {
-    name: "Manage Properties",
-    url: "/profile/editProperties",
-    icon: <Build />
+    name: "Edit Properties",
+    url: "/update/property",
+    icon: <Edit />
   }
 ];
 
