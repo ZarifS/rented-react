@@ -109,10 +109,10 @@ class NavBar extends Component {
                   onClose={this.handleClose}
                 >
                   <MenuItem onClick={this.handleClose}>
-                    <Link to="/profile/setup">Profile</Link>
+                    <Link to="/profile/edit">Profile</Link>
                   </MenuItem>
                   <MenuItem onClick={this.handleLogoutClose}>
-                    <Link to="/profile/logout">Logout</Link>
+                    <Link to="/">Logout</Link>
                   </MenuItem>
                 </Menu>
               </div>

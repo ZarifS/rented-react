@@ -8,6 +8,7 @@ import axios from "axios";
 import ViewProperty from "./containers/ViewProperty";
 import CreateProperty from "./containers/CreateProperty";
 import UpdateProperty from "./containers/UpdateProperty";
+import ViewProfile from "./containers/ViewProfile";
 
 class App extends Component {
   constructor(props) {
@@ -31,6 +32,8 @@ class App extends Component {
           .catch(e => {
             console.log("error: ", e.message);
           });
+      } else {
+        this.setState({ ownedProperties: [] });
       }
     });
   };
@@ -95,6 +98,18 @@ class App extends Component {
               path="/profile/rented"
               exact
               render={props => <PropertiesList {...props} isAuthed={true} />}
+            />
+            <Route
+              path="/profile/edit"
+              exact
+              render={props => (
+                <ViewProfile
+                  user={this.state.firebaseUser}
+                  setUser={this.setUser}
+                  {...props}
+                  isAuthed={true}
+                />
+              )}
             />
           </div>
         </div>

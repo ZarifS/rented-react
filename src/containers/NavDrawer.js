@@ -13,7 +13,9 @@ import {
 import { Link } from "react-router-dom";
 import {
   Home,
+  Edit,
   Assessment,
+  LibraryAdd,
   Menu,
   AccountBalance,
   ShoppingCart,
@@ -32,15 +34,15 @@ const allNavigationPaths = [
   {
     name: "Browse",
     url: "/",
-    icon: <ShoppingCart />,
+    icon: <ShoppingCart />
   }
 ];
 
 const userNavigationPaths = [
   {
-    name: "Rentals",
-    url: "/profile/rented",
-    icon: <AccountBalance />
+    name: "Add Property",
+    url: "/create/property",
+    icon: <LibraryAdd />
   },
   {
     name: "Owned Properties",
@@ -66,9 +68,9 @@ const userNavigationPaths = [
 
 const accountNavigationPaths = [
   {
-    name: "Profile",
-    url: "/profile/setup",
-    icon: <AccountBox />
+    name: "Edit Profile",
+    url: "/profile/edit",
+    icon: <Edit />
   }
 ];
 
