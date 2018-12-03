@@ -9,6 +9,7 @@ import ViewProperty from "./containers/ViewProperty";
 import CreateProperty from "./containers/CreateProperty";
 import UpdateProperty from "./containers/UpdateProperty";
 import ViewProfile from "./containers/ViewProfile";
+import VisitList from "./containers/VisitList";
 
 class App extends Component {
   constructor(props) {
@@ -103,6 +104,11 @@ class App extends Component {
               path="/profile/rented"
               exact
               render={props => <PropertiesList {...props} isAuthed={true} />}
+            />
+            <Route
+              path="/profile/visitList"
+              exact
+              render={props => <VisitList {...props} isAuthed={true} />}
             />
             <Route
               path="/profile/edit"
