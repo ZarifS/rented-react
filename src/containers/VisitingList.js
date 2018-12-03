@@ -12,28 +12,33 @@ class VisitingList extends Component {
   }
   componentDidMount = () => {
     console.log(this.props.user);
-    const userID=this.props.user.uid;
-    if(userID){
-      axios.get("http://localhost:8000/api/getVisitingList/"+userID).then(res => {
-        let { data } = res;
-        if (data) {
-          this.setState({ visitings: data }, () => {
-            console.log("Set visiting results to : ", this.state.visitings);
+    if (this.props.user) {
+      const userID = this.props.user.uid;
+      if (userID) {
+        axios
+          .get("http://localhost:8000/api/getVisitingList/" + userID)
+          .then(res => {
+            let { data } = res;
+            if (data) {
+              this.setState({ visitings: data }, () => {
+                console.log("Set visiting results to : ", this.state.visitings);
+
+                this.state.visitings.forEach(visit => {
+                  axios
+                    .get(
+                      "http://localhost:8000/api/getListing/" + visit.listing_id
+                    )
+                    .then(response => {
+                      const { data } = response;
+                      console.log(data);
+                      let temp = [...this.state.properties];
+                      temp.push(data);
+                      this.setState({ properties: [...temp] });
+                    });
+                });
+              });
+            }
           });
-        }
-      });
-      console.log(this.state.properties);
-      let temp=this.state.properties;
-      for (var i=0;i<this.state.visitings.length;i++){
-          axios.get("http://localhost:8000/api/getListing/"+this.state.visitings[i].listing_id).then(res => {
-          let { data } = res;
-          if (data) {
-            temp.push(data);
-            this.setState({ properties: temp }, () => {
-              console.log("Set property results to : ", this.state.properties);
-            });
-          }
-        });
       }
     }
   };

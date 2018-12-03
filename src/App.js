@@ -9,7 +9,7 @@ import ViewProperty from "./containers/ViewProperty";
 import CreateProperty from "./containers/CreateProperty";
 import UpdateProperty from "./containers/UpdateProperty";
 import ViewProfile from "./containers/ViewProfile";
-import VisitList from "./containers/VisitList";
+import VisitingList from "./containers/VisitingList";
 
 class App extends Component {
   constructor(props) {
@@ -108,7 +108,13 @@ class App extends Component {
             <Route
               path="/profile/visitList"
               exact
-              render={props => <VisitList {...props} isAuthed={true} />}
+              render={props => (
+                <VisitingList
+                  user={this.state.firebaseUser}
+                  {...props}
+                  isAuthed={true}
+                />
+              )}
             />
             <Route
               path="/profile/edit"
