@@ -301,7 +301,7 @@ class UpdateProperty extends Component{
     render(){
         const { classes }=this.props;
         return(
-            <form className={classes.container}>
+            <div className={classes.container}>
                 <TextField error={this.state.title===""} helperText={this.state.title === "" ? 'Required!' : ' '} name="title" label="Title" className={classes.textField} PlaceHolder="Title"  value={this.state.title} onChange={this.handleInputChange} margin="normal" variant="outlined"/>
                 <TextField disabled name="type" select label="Property Type" className={classes.textField} value={this.state.type} SelectProps={{MenuProps:{className:classes.menu,}}}
                             helperText="Please select Property Type" margin="normal" variant="outlined">
@@ -402,7 +402,7 @@ class UpdateProperty extends Component{
                     }
                     className={classes.snackbar}
                     />
-            </form>
+            </div>
         );
     }
 }
