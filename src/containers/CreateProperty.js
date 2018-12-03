@@ -179,7 +179,7 @@ class CreateProperty extends Component {
           city: this.state.city,
           province: this.state.province,
           country: this.state.country,
-          postal_code: this.postalCode,
+          postal_code: this.state.postalCode,
           bathrooms: parseInt(this.state.numBathrooms),
           bedrooms: parseInt(this.state.numBedrooms),
           otherRooms: parseInt(this.state.numOtherRooms),
@@ -221,6 +221,7 @@ class CreateProperty extends Component {
           errMessage: "Successfully added Property",
           open: true
         });
+        window.location = "http://localhost:3000/";
       } else {
         console.log("Not Logged in");
         this.setState({ errMessage: "Not logged in", open: true });

@@ -143,7 +143,7 @@ class UpdateProperty extends Component{
         const userUID=this.props.user.uid;
         const propertyID=this.props.listing_id;
         if(propertyID){
-            const url="localhost:8000/api/getListings/"+propertyID;
+            const url="http://localhost:8000/api/getListing/"+propertyID;
             axios.get(url).then(res=>{
                 let property={...res.data };
                 console.log(property);
@@ -257,8 +257,8 @@ class UpdateProperty extends Component{
                     bathrooms: parseInt(this.state.numBathrooms),
                     bedrooms: parseInt(this.state.numBedrooms),
                     otherRooms: parseInt(this.state.numOtherRooms),
-                    type: this.state.type,
                     available: this.state.available,
+                    rent:this.state.rent,
                     picture_urls:{
                         main: this.state.pic1,
                         pic2: this.state.pic2,
@@ -268,7 +268,7 @@ class UpdateProperty extends Component{
                     }
                 }
                 console.log(property1);
-                axios.post(url,property1).then(res=>{
+                axios.patch(url,property1).then(res=>{
                     console.log(res);
                     console.log(res.data);
                 }).catch(err=>{
@@ -276,6 +276,7 @@ class UpdateProperty extends Component{
                     this.setState({errMessage:"Error when updating property",open:true});
                 });
                 this.setState({errMessage:"Successfully updated Property",open:true});
+                window.location = "http://localhost:3000/";
             }
             else{
                 console.log("not allowed to update other owners properties or not logged in");
