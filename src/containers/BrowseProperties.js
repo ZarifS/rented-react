@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import Explore from '../components/Explore';
 import SearchResults from '../components/SearchResults';
+import axios from 'axios';
 
 const styles = theme => ({
     root: {
@@ -38,13 +39,29 @@ class BrowseProperties extends Component {
         this.setState({isSearchResultsVisible: true})
         this.setState({searchValue: dataFromChild});
     }
+
+    this.exploreCallback = () => {
+      this.setState({isSearchResultsVisible: true})
+      this.setState({searchValue: 'All Properties'})
+    }
   }
 
   componentDidMount(){
       this.setState({
           isSearchResultsVisible: false
       });
-      //fetch properties
+
+      axios.get('http://localhost:8000/api/getListings')
+      .then(response => {
+        let properties = response.data;
+        console.log("fetched properties: "+ JSON.stringify(properties));
+        this.setState({
+          properties: properties,
+        })
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -58,7 +75,7 @@ class BrowseProperties extends Component {
             <Grid item xs={12}>
                 <Search callbackFromParent={this.searchBarCallback}/>
             </Grid>
-            {this.state.isSearchResultsVisible ? <SearchResults searchValue={this.state.searchValue} callbackFromParent={this.searchResultsCallback}/> :<Explore/>}
+            {this.state.isSearchResultsVisible ? <SearchResults properties={this.state.properties} searchValue={this.state.searchValue} callbackFromParent={this.searchResultsCallback}/> :<Explore properties={this.state.properties} callbackFromParent={this.exploreCallback}/>}
         </Grid>
       </div>
     );
