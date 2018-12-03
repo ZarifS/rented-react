@@ -20,18 +20,6 @@ const styles = theme => ({
   });
 
 
-  const Title = styled.span`
-    font-size: 20px;
-    font-weight: 800;
-    color: white;
-  `;
-
-  const Price = styled.span`
-    font-size: 16px;
-    font-weight: 600;
-    z-index: 100;
-  `
-
 
 class BrowseProperties extends Component {
   constructor(props) {
