@@ -24,7 +24,7 @@ class Home extends Component {
   render = () => {
     return (
       <div className="container">
-        <PropertiesList properties={this.state.properties} />
+        <BrowseProperties properties={this.state.properties}/>
       </div>
     );
   };

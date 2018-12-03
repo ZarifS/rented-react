@@ -10,20 +10,11 @@ import AutoComplete from 'material-ui/AutoComplete';
  class Search extends Component {
     constructor(props) {
       super(props)
-
-      this.state = {
-        value: "",
-        properties: []
-      };
     }
 
     handleChange = (e) => {
-      this.setState({ value: e});
+      this.props.callbackFromParent(e);
     }
-
-    handleSubmit = () => {
-        this.props.callbackFromParent(this.state.value);
-      }
 
     render() {
       return (
@@ -31,7 +22,6 @@ import AutoComplete from 'material-ui/AutoComplete';
         <MuiThemeProvider>
         <SearchBar
           onChange={this.handleChange}
-          onRequestSearch={this.handleSubmit}
           style={{
             margin: '15px auto',
             maxWidth: 800
