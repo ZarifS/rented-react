@@ -96,7 +96,7 @@ SingleProperty.propTypes = {
 
 const styles = theme => ({
   card: {
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   media: {
     height: 0,
