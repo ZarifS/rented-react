@@ -10,6 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
+import { Redirect } from "react-router-dom";
 
 const Row = styled.li`
   display: flex;
@@ -87,61 +88,18 @@ class CreateProperty extends Component {
       pic5: "",
       errMessage: "",
       available: false,
-      open: false
+      open: false,
+      redirect: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleCancel=this.handleCancel.bind(this);
+    this.handleClose=this.handleClose.bind(this);
   }
 
-  //   fileUpload = () => {
-  //     const currImages = this.state.allImages;
-  //     for (var i = 0; i < this.state.image.length; i++) {
-  //       var fd = new FormData();
-  //       fd.append(
-  //         "image" + i.toString(),
-  //         this.state.image[i],
-  //         this.state.image[i].name
-  //       );
-  //       currImages.push(fd);
-  //     }
-
-  //     this.setState({ allImages: currImages });
-  //   };
-  //   fileHandler(e) {
-  //     let allfiles = e.target.files;
-  //     let files = [];
-  //     let urls = [];
-
-  //     for (var i = 0; i < allfiles.length; i++) {
-  //       files[i] = allfiles.item(i);
-  //     }
-  //     files = files.filter(image => image.name.match(/\.(jpg|jpeg|png)$/));
-  //     let message = "";
-  //     if (files.length > 5) {
-  //       message = "You are only allowed to upload 5 images ";
-  //     }
-  //     for (var j = 0; j < files.length; j++) {
-  //       let reader = new FileReader();
-  //       if (files[j].size > 5000000) {
-  //         message = "File size exceeded 5 mb";
-  //         break;
-  //       }
-  //       reader.readAsDataURL(files[j]);
-  //       reader.onload = () => {
-  //         urls.push(reader.result);
-  //         this.setState({
-  //           imageURLS: urls
-  //         });
-  //       };
-  //     }
-
-  //     this.setState({
-  //       image: files,
-  //       errMessage: message
-  //     });
-  //   }
+  
   handleCheck() {
     this.setState({
       available: !this.state.available
@@ -158,12 +116,12 @@ class CreateProperty extends Component {
       [name]: value
     });
   }
-  handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+  handleClose = (event) => {
+    if (this.state.errMessage.includes("Success")){
+        this.setState({redirect:true});
     }
-
     this.setState({ open: false });
+    
   };
   handleSubmit(e) {
     var valid = this.validateInput();
@@ -221,7 +179,6 @@ class CreateProperty extends Component {
           errMessage: "Successfully added Property",
           open: true
         });
-        window.location = "http://localhost:3000/";
       } else {
         console.log("Not Logged in");
         this.setState({ errMessage: "Not logged in", open: true });
@@ -232,6 +189,15 @@ class CreateProperty extends Component {
     }
 
     e.preventDefault();
+  }
+  handleCancel(e) {
+    this.setState({redirect:true});
+    
+  }
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/' />
+    }
   }
   validateInput = () => {
     if (
@@ -467,6 +433,14 @@ class CreateProperty extends Component {
           variant="outlined"
         />
         <Row>
+        {this.renderRedirect()}
+        <Button
+            className={classes.button}
+            variant="contained"
+            onClick={this.handleCancel}
+          >
+            Cancel
+          </Button>
           <Button
             className={classes.button}
             variant="contained"

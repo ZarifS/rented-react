@@ -10,6 +10,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
+import { Redirect } from "react-router-dom";
 const Label = styled.label`
   padding: 0.5em 1em 0.5em 0;
   flex: 1;
@@ -132,11 +133,14 @@ class UpdateProperty extends Component {
       errMessage: "",
       available: false,
       disabledUpdate: false,
-      open: false
+      open: false,
+      redirect:false
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
+    this.handleCancel=this.handleCancel.bind(this);
+    this.handleClose=this.handleClose.bind(this);
   }
   componentDidMount = () => {
     const userUID = this.props.user.uid;
@@ -187,49 +191,7 @@ class UpdateProperty extends Component {
       this.setState({ errMessage: "Listing id not provided", open: true });
     }
   };
-  // fileUpload=()=>{
-  //     const currImages=this.state.allImages;
-  //     for (var i=0;i<this.state.image.length;i++){
-  //         var fd = new FormData();
-  //         fd.append('image'+i.toString(),this.state.image[i],this.state.image[i].name);
-  //         currImages.push(fd);
-  //     }
-
-  //     this.setState({allImages:currImages});
-  // }
-  // fileHandler(e){
-  //     let allfiles=e.target.files;
-  //     let files=[];
-  //     let urls=[];
-
-  //     for (var i=0;i<allfiles.length;i++){
-  //         files[i]=(allfiles.item(i));
-  //     }
-  //     files=files.filter(image=>image.name.match(/\.(jpg|jpeg|png)$/));
-  //     let message = "";
-  //     if (files.length>5){
-  //         message=("You are only allowed to upload 5 images ");
-  //     }
-  //     for (var j=0;j<files.length;j++){
-  //         let reader=new FileReader();
-  //         if (files[j].size>5000000){
-  //             message=("File size exceeded 5 mb");
-  //             break;
-  //         }
-  //         reader.readAsDataURL(files[j]);
-  //         reader.onload=()=>{
-  //             urls.push(reader.result);
-  //             this.setState({
-  //                 imageURLS: urls
-  //             });
-  //         }
-  //     }
-
-  //     this.setState({
-  //         image : files,
-  //         errMessage: message
-  //     });
-  // }
+  
   handleCheck() {
     this.setState({
       available: !this.state.available
@@ -243,12 +205,12 @@ class UpdateProperty extends Component {
       [name]: value
     });
   }
-  handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+  handleClose = (event) => {
+    if (this.state.errMessage.includes("Success")){
+        this.setState({redirect:true});
     }
-
     this.setState({ open: false });
+    
   };
   handleSubmit(e) {
     var valid = this.validateInput();
@@ -291,7 +253,7 @@ class UpdateProperty extends Component {
           errMessage: "Successfully updated Property",
           open: true
         });
-        window.location = "http://localhost:3000/";
+        
       } else {
         console.log(
           "not allowed to update other owners properties or not logged in"
@@ -305,7 +267,13 @@ class UpdateProperty extends Component {
     e.preventDefault();
   }
   handleCancel(e) {
-    return;
+    this.setState({redirect:true});
+    
+  }
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/profile/owned' />
+    }
   }
   validateInput = () => {
     if (
@@ -533,6 +501,14 @@ class UpdateProperty extends Component {
           variant="outlined"
         />
         <Row>
+          {this.renderRedirect()}
+          <Button
+            className={classes.button}
+            variant="contained"
+            onClick={this.handleCancel}
+          >
+            Cancel
+          </Button>
           <Button
             className={classes.button}
             disabled={this.state.disabledUpdate}
@@ -549,7 +525,7 @@ class UpdateProperty extends Component {
             horizontal: "left"
           }}
           open={this.state.open}
-          autoHideDuration={4000}
+          autoHideDuration={6000}
           onClose={this.handleClose}
           message={this.state.errMessage}
           action={
