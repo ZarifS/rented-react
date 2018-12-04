@@ -53,11 +53,6 @@ const userNavigationPaths = [
     name: "Visitation List",
     url: "/profile/visitList",
     icon: <Bookmark />
-  },
-  {
-    name: "Edit Properties",
-    url: "/update/property",
-    icon: <Edit />
   }
 ];
 
